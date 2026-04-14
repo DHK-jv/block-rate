@@ -245,32 +245,88 @@ body {
   background: #fff;
   border: 1px solid var(--pd-border);
   border-radius: var(--pd-radius);
-  padding: 25px;
+  padding: 24px;
   transition: all 0.3s ease;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
 }
 
 .pd-review-card:hover {
-  transform: translateX(10px);
-  box-shadow: var(--shadow-md);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  border-color: #cbd5e1;
+}
+
+.pd-review-card__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.pd-reviewer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .pd-reviewer__avatar {
+  width: 44px;
+  height: 44px;
   background: var(--pd-accent-gradient);
   color: #fff;
   font-weight: 800;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
+  flex-shrink: 0;
+}
+
+.pd-reviewer__meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.pd-reviewer__meta strong {
+  font-size: 0.9rem;
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  color: #1e293b;
+  word-break: break-all;
 }
 
 .pd-verified {
-  background: #f0f7ff;
-  border: 1px solid #dbeafe;
-  color: #1d4ed8;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #16a34a;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pd-verified:hover {
+  background: #dcfce7;
+  transform: scale(1.02);
 }
 
 .pd-tx {
   background: #f8fafc;
   border: 1px solid var(--pd-border);
-  color: #64748b;
+  color: #94a3b8;
+  font-size: 0.75rem;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-family: monospace;
 }
 
 @media (max-width: 992px) {

@@ -100,7 +100,7 @@ export const review = async (req, res) => {
       return res.status(400).json({ success: false, message: "Order đã review trên blockchain" });
 
     const reviewHash = ethers.keccak256(
-      ethers.toUtf8Bytes(`${order._id}-${userId}-${productId}-${rating}-${content}`)
+      ethers.toUtf8Bytes(`${order._id.toString()}-${userId.toString()}-${productId.toString()}-${rating}-${content.trim()}`)
     );
 
     const tx = await contract.submitReview(order._id.toString(), productId.toString(), reviewHash);
@@ -128,7 +128,7 @@ export const verifyReview = async (req, res) => {
     if (!reviewDoc || !reviewDoc.orderID || !reviewDoc.user) return res.json({ success: false, message: "Nhận xét thiếu dữ liệu gốc" });
 
     const localHash = ethers.keccak256(
-      ethers.toUtf8Bytes(`${reviewDoc.orderID.toString()}-${reviewDoc.user.toString()}-${reviewDoc.product.toString()}-${reviewDoc.rating}-${reviewDoc.content}`)
+      ethers.toUtf8Bytes(`${reviewDoc.orderID.toString()}-${reviewDoc.user.toString()}-${reviewDoc.product.toString()}-${reviewDoc.rating}-${reviewDoc.content.trim()}`)
     );
 
     if (!contract) return res.json({ success: false, message: "Hệ thống blockchain chưa được cấu hình" });

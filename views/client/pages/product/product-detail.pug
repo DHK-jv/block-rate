@@ -82,26 +82,26 @@ block content
               .pd-reviewer  
                 .pd-reviewer__avatar= review.user && review.user.walletAddress ? review.user.walletAddress.substring(2, 4).toUpperCase() : '??'
                 .pd-reviewer__meta
-                  strong= review.user && review.user.walletAddress ? (review.user.walletAddress.substring(0, 6) + '...' + review.user.walletAddress.substring(review.user.walletAddress.length - 4)) : 'Người dùng ẩn danh'
+                  strong= review.user && review.user.walletAddress ? review.user.walletAddress : 'Người dùng ẩn danh'
               
               .pd-review-stars
                 - for (let i = 1; i <= 5; i++)
-                  span.material-symbols-outlined(style=`font-size:16px; color: ${i <= review.rating ? '#f59e0b' : '#334155'}`) star
+                  span.material-symbols-outlined(style=`font-size:16px; color: ${i <= review.rating ? '#f59e0b' : '#cbd5e1'}`) star
 
             p.pd-review-card__text= review.content || 'Không có nhận xét nào.'
             
-            .pd-review-card__footer
+            .pd-review-card__footer.mt-3.pt-3.border-top.d-flex.align-items-center.justify-content-between
               button.pd-verified.verify-btn(
                   data-id=review._id
                   data-tx=review.txHash
                   type="button"
                 )
-                span.material-symbols-outlined(style="font-size:14px") account_balance_wallet
-                span Blockchain Verify
+                  span.material-symbols-outlined(style="font-size:16px") account_balance_wallet
+                  span Blockchain Verify
               
               .pd-tx
-                span.material-symbols-outlined.fs-8.me-1 link
-                span Tx: #{review.txHash ? review.txHash.substring(0, 10) + '...' : "N/A"}
+                span.material-symbols-outlined.fs-9.me-1 link
+                span= review.txHash ? review.txHash.substring(0, 14) + '...' : "N/A"
 
         a.pd-load-more(href="#")
           span.material-symbols-outlined.me-1(style="vertical-align: middle") expand_more
@@ -257,7 +257,7 @@ block scripts
       const icon = btn.querySelector('.material-symbols-outlined')
       
       btn.disabled = true
-      label.textContent = 'Checking...'
+      label.textContent = 'Đang kiểm tra...'
       icon.textContent = 'published_with_changes'
       icon.classList.add('spin-icon')
 
@@ -265,18 +265,18 @@ block scripts
         var res = await fetch('/product/verify-review/' + btn.dataset.id)
         var data = await res.json()
         if (data.success) {
-          label.textContent = 'Verified'
+          label.textContent = 'Đã xác minh'
           icon.textContent = 'verified'
           btn.style.borderColor = '#22c55e'
           btn.style.color = '#22c55e'
         } else {
-          label.textContent = 'Tampered'
+          label.textContent = 'Dữ liệu bị sửa đổi'
           icon.textContent = 'report'
           btn.style.borderColor = '#ef4444'
           btn.style.color = '#ef4444'
         }
       } catch {
-        label.textContent = 'Error'
+        label.textContent = 'Lỗi hệ thống'
       }
     })
 
