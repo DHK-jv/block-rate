@@ -3,3 +3,4 @@
 /* eslint-disable */
 export { BlockRateMarket__factory } from './BlockRateMarket__factory.js';
 export { Counter__factory } from './Counter__factory.js';
+export { ReviewRegistry__factory } from './ReviewRegistry__factory.js';

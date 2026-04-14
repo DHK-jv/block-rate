@@ -12,15 +12,19 @@ declare module "@nomicfoundation/hardhat-ethers/types" {
   interface HardhatEthersHelpers extends HardhatEthersHelpersBase {
   getContractFactory(name: 'BlockRateMarket', signerOrOptions?: ethers.Signer | FactoryOptions): Promise<Contracts.BlockRateMarket__factory>
 getContractFactory(name: 'Counter', signerOrOptions?: ethers.Signer | FactoryOptions): Promise<Contracts.Counter__factory>
+getContractFactory(name: 'ReviewRegistry', signerOrOptions?: ethers.Signer | FactoryOptions): Promise<Contracts.ReviewRegistry__factory>
 
   getContractAt(name: 'BlockRateMarket', address: string | ethers.Addressable, signer?: ethers.Signer): Promise<Contracts.BlockRateMarket>
 getContractAt(name: 'Counter', address: string | ethers.Addressable, signer?: ethers.Signer): Promise<Contracts.Counter>
+getContractAt(name: 'ReviewRegistry', address: string | ethers.Addressable, signer?: ethers.Signer): Promise<Contracts.ReviewRegistry>
 
   deployContract(name: 'BlockRateMarket', signerOrOptions?: ethers.Signer | DeployContractOptions): Promise<Contracts.BlockRateMarket>
 deployContract(name: 'Counter', signerOrOptions?: ethers.Signer | DeployContractOptions): Promise<Contracts.Counter>
+deployContract(name: 'ReviewRegistry', signerOrOptions?: ethers.Signer | DeployContractOptions): Promise<Contracts.ReviewRegistry>
 
   deployContract(name: 'BlockRateMarket', args: any[], signerOrOptions?: ethers.Signer | DeployContractOptions): Promise<Contracts.BlockRateMarket>
 deployContract(name: 'Counter', args: any[], signerOrOptions?: ethers.Signer | DeployContractOptions): Promise<Contracts.Counter>
+deployContract(name: 'ReviewRegistry', args: any[], signerOrOptions?: ethers.Signer | DeployContractOptions): Promise<Contracts.ReviewRegistry>
 
     // default types
     getContractFactory(

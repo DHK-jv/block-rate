@@ -34,7 +34,23 @@ export const detail = async (req, res) => {
       }
     }
 
-    res.render("./client/pages/product/product-detail", { product, reviews, hasBought, pendingReviewCount });
+    let onchainReviewCount = 0;
+    if (contract) {
+      try {
+        const onchainTotal = await contract.totalReviewsByProduct(req.params.id.toString());
+        onchainReviewCount = Number(onchainTotal);
+      } catch (err) {
+        console.error("⚠️ Không thể lấy tổng đánh giá từ on-chain (có thể Contract chưa được deploy bản mới):", err.message);
+      }
+    }
+
+    res.render("./client/pages/product/product-detail", { 
+      product, 
+      reviews, 
+      hasBought, 
+      pendingReviewCount, 
+      onchainReviewCount 
+    });
   } catch (error) {
     console.error("[detail]", error);
     res.status(500).send("Lỗi máy chủ khi tải chi tiết sản phẩm");

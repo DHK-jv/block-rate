@@ -1,0 +1,40 @@
+{
+  "_format": "hh3-sol-build-info-1",
+  "id": "solc-0_8_28-dc568e446994c67ff6c00b872cc7636920273fc1",
+  "solcVersion": "0.8.28",
+  "solcLongVersion": "0.8.28+commit.7893614a",
+  "compilerType": "solc",
+  "userSourceNameMap": {
+    "contracts/ReviewRegistry.sol": "project/contracts/ReviewRegistry.sol"
+  },
+  "input": {
+    "language": "Solidity",
+    "settings": {
+      "evmVersion": "cancun",
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "outputSelection": {
+        "*": {
+          "": [
+            "ast"
+          ],
+          "*": [
+            "abi",
+            "evm.bytecode",
+            "evm.deployedBytecode",
+            "evm.methodIdentifiers",
+            "metadata"
+          ]
+        }
+      },
+      "remappings": []
+    },
+    "sources": {
+      "project/contracts/ReviewRegistry.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.20;\n\ncontract ReviewRegistry {\n\n    // ==============================\n    // STRUCT\n    // ==============================\n    struct ReviewRecord {\n        uint256 reviewId;\n        bytes32 reviewHash;\n        string orderId;\n        string productId;\n        address submitter;\n        uint256 timestamp;\n        bool exists;\n    }\n\n    // ==============================\n    // STATE VARIABLES\n    // ==============================\n    address public immutable owner;\n    address public backendSigner;\n\n    uint256 public totalReviews;\n\n    // orderId => review\n    mapping(string => ReviewRecord) private reviewsByOrder;\n\n    // reviewId => review\n    mapping(uint256 => ReviewRecord) private reviewsById;\n\n    // hash => orderId\n    mapping(bytes32 => string) private orderByHash;\n\n    // productId => total reviews\n    mapping(string => uint256) public totalReviewsByProduct;\n\n    // ==============================\n    // EVENTS\n    // ==============================\n    event ReviewSubmitted(\n        uint256 indexed reviewId,\n        string indexed orderId,\n        bytes32 indexed reviewHash,\n        string productId,\n        address submitter,\n        uint256 timestamp\n    );\n\n    event BackendSignerUpdated(\n        address indexed oldSigner,\n        address indexed newSigner\n    );\n\n    // ==============================\n    // ERRORS\n    // ==============================\n    error NotAuthorized();\n    error AlreadyReviewed();\n    error InvalidHash();\n    error InvalidOrderId();\n\n    // ==============================\n    // MODIFIERS\n    // ==============================\n    modifier onlyOwner() {\n        if (msg.sender != owner) revert NotAuthorized();\n        _;\n    }\n\n    modifier onlyBackend() {\n        if (msg.sender != backendSigner) revert NotAuthorized();\n        _;\n    }\n\n    // ==============================\n    // CONSTRUCTOR\n    // ==============================\n    constructor(address _backendSigner) {\n        owner = msg.sender;\n        backendSigner = _backendSigner;\n    }\n\n    // ==============================\n    // SUBMIT REVIEW\n    // ==============================\n    function submitReview(\n        string calldata orderId,\n        string calldata productId,\n        bytes32 reviewHash\n    ) external onlyBackend {\n\n        if (bytes(orderId).length == 0) revert InvalidOrderId();\n        if (reviewHash == bytes32(0)) revert InvalidHash();\n        if (reviewsByOrder[orderId].exists) revert AlreadyReviewed();\n\n        totalReviews++;\n        totalReviewsByProduct[productId]++;\n\n        ReviewRecord memory newReview = ReviewRecord({\n            reviewId: totalReviews,\n            reviewHash: reviewHash,\n            orderId: orderId,\n            productId: productId,\n            submitter: msg.sender,\n            timestamp: block.timestamp,\n            exists: true\n        });\n\n        reviewsByOrder[orderId] = newReview;\n        reviewsById[totalReviews] = newReview;\n        orderByHash[reviewHash] = orderId;\n\n        emit ReviewSubmitted(\n            totalReviews,\n            orderId,\n            reviewHash,\n            productId,\n            msg.sender,\n            block.timestamp\n        );\n    }\n\n    // ==============================\n    // CHECK ORDER REVIEWED\n    // ==============================\n    function hasReviewed(string calldata orderId)\n        external\n        view\n        returns (bool)\n    {\n        return reviewsByOrder[orderId].exists;\n    }\n\n    // ==============================\n    // GET REVIEW BY ORDER\n    // ==============================\n    function getReviewByOrder(string calldata orderId)\n        external\n        view\n        returns (\n            uint256 reviewId,\n            bytes32 reviewHash,\n            address submitter,\n            uint256 timestamp\n        )\n    {\n        ReviewRecord storage r = reviewsByOrder[orderId];\n        require(r.exists, \"Review not found\");\n\n        return (\n            r.reviewId,\n            r.reviewHash,\n            r.submitter,\n            r.timestamp\n        );\n    }\n\n    // ==============================\n    // GET REVIEW BY ID\n    // ==============================\n    function getReviewById(uint256 reviewId)\n        external\n        view\n        returns (\n            string memory orderId,\n            string memory productId,\n            bytes32 reviewHash,\n            uint256 timestamp\n        )\n    {\n        ReviewRecord storage r = reviewsById[reviewId];\n        require(r.exists, \"Review not found\");\n\n        return (\n            r.orderId,\n            r.productId,\n            r.reviewHash,\n            r.timestamp\n        );\n    }\n\n    // ==============================\n    // VERIFY REVIEW\n    // ==============================\n    function verifyReview(\n        string calldata orderId,\n        string calldata reviewContent,\n        string calldata userId\n    )\n        external\n        view\n        returns (\n            bool isValid,\n            bytes32 storedHash\n        )\n    {\n        ReviewRecord storage r = reviewsByOrder[orderId];\n\n        if (!r.exists) {\n            return (false, bytes32(0));\n        }\n\n        bytes32 computedHash = keccak256(\n            abi.encodePacked(orderId, \"-\", userId, \"-\", reviewContent)\n        );\n\n        return (\n            computedHash == r.reviewHash,\n            r.reviewHash\n        );\n    }\n\n    // ==============================\n    // HASH LOOKUP\n    // ==============================\n    function getOrderByHash(bytes32 reviewHash)\n        external\n        view\n        returns (string memory)\n    {\n        return orderByHash[reviewHash];\n    }\n\n    // ==============================\n    // UPDATE BACKEND SIGNER\n    // ==============================\n    function setBackendSigner(address newSigner)\n        external\n        onlyOwner\n    {\n        require(newSigner != address(0), \"Zero address\");\n\n        emit BackendSignerUpdated(\n            backendSigner,\n            newSigner\n        );\n\n        backendSigner = newSigner;\n    }\n}"
+      }
+    }
+  }
+}

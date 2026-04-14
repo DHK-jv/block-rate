@@ -33,6 +33,9 @@ contract ReviewRegistry {
     // hash => orderId
     mapping(bytes32 => string) private orderByHash;
 
+    // productId => total reviews
+    mapping(string => uint256) public totalReviewsByProduct;
+
     // ==============================
     // EVENTS
     // ==============================
@@ -93,6 +96,7 @@ contract ReviewRegistry {
         if (reviewsByOrder[orderId].exists) revert AlreadyReviewed();
 
         totalReviews++;
+        totalReviewsByProduct[productId]++;
 
         ReviewRecord memory newReview = ReviewRecord({
             reviewId: totalReviews,

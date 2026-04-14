@@ -20,6 +20,7 @@ const abi = [
   "function submitReview(string calldata orderId, string calldata productId, bytes32 reviewHash) external",
   "function hasReviewed(string calldata orderId) external view returns (bool)",
   "function getReviewByOrder(string calldata orderId) external view returns (uint256, bytes32, address, uint256)",
+  "function totalReviewsByProduct(string calldata productId) external view returns (uint256)"
 ];
 
 try {

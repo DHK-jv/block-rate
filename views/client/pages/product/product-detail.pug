@@ -72,9 +72,24 @@ block content
           h2.d-flex.align-items-center.gap-2
             span.material-symbols-outlined.text-primary rate_review
             | Đánh giá từ cộng đồng
-          .pd-transparent-badge
-             span.material-symbols-outlined.fs-7.text-success verified_user
-             span 100% Minh bạch (On-chain)
+          if onchainReviewCount > 0
+            if reviews.length == onchainReviewCount
+              .pd-transparent-badge.bg-success.bg-opacity-10.border.border-success.rounded-3.p-2.d-flex.align-items-center.gap-2.text-success
+                span.material-symbols-outlined.fs-6 verified_user
+                span Toàn vẹn dữ liệu (#{reviews.length}/#{onchainReviewCount} hiển thị)
+            else if reviews.length < onchainReviewCount
+              .alert.alert-danger.rounded-3.p-2.m-0.d-flex.align-items-center.gap-2.border-danger
+                span.material-symbols-outlined.fs-6 warning
+                strong CẢNH BÁO CHE GIẤU:
+                span Chỉ hiển thị #{reviews.length} trên tổng số #{onchainReviewCount} đánh giá gốc!
+            else
+              .pd-transparent-badge.bg-warning.bg-opacity-10.text-warning.rounded-3.p-2.d-flex.align-items-center.gap-2
+                span.material-symbols-outlined.fs-6 inventory_2
+                span Phát hiện dữ liệu ảo (Hiển thị: #{reviews.length} - Thực tế: #{onchainReviewCount})
+          else
+            .pd-transparent-badge
+               span.material-symbols-outlined.fs-7.text-success verified_user
+               span Chờ Blockchain đồng bộ...
 
         each review in reviews
           .pd-review-card

@@ -1,6 +1,6 @@
 {
   "_format": "hh3-sol-build-info-1",
-  "id": "solc-0_8_28-5b37cf68ecb638469544a1cdb676b5901b6d26e5",
+  "id": "solc-0_8_28-4e43ae42d74a4c6bc8244a0de42ad9bb4e527d2a",
   "solcVersion": "0.8.28",
   "solcLongVersion": "0.8.28+commit.7893614a",
   "compilerType": "solc",
@@ -11,6 +11,10 @@
     "language": "Solidity",
     "settings": {
       "evmVersion": "cancun",
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
       "outputSelection": {
         "*": {
           "": [

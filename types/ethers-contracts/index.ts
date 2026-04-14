@@ -3,6 +3,8 @@
 /* eslint-disable */
 export type { BlockRateMarket } from './BlockRateMarket.js';
 export type { Counter } from './Counter.js';
+export type { ReviewRegistry } from './ReviewRegistry.js';
 export * as factories from './factories/index.js';
 export { BlockRateMarket__factory } from './factories/BlockRateMarket__factory.js';
 export { Counter__factory } from './factories/Counter__factory.js';
+export { ReviewRegistry__factory } from './factories/ReviewRegistry__factory.js';
