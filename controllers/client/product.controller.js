@@ -85,54 +85,73 @@ export const buy = async (req, res) => {
 };
 
 /**
- * GỬI ĐÁNH GIÁ VÀ LƯU TRỮ HASH LÊN BLOCKCHAIN
+ * GỬI ĐÁNH GIÁ VÀ LƯU TRỮ HASH LÊN BLOCKCHAIN (CƠ CHẾ ROLLBACK AN TOÀN)
  */
 export const review = async (req, res) => {
-  try {
-    const { rating, content } = req.body;
-    const { id: productId } = req.params;
-    const userId = req.user._id;
+  let newReview = null;
+  const { rating, content } = req.body;
+  const { id: productId } = req.params;
+  const userId = req.user._id;
 
+  try {
     if (!rating || !content) return Response.error(res, "Vui lòng nhập đầy đủ thông tin", 400);
     if (!contract) return Response.error(res, "Hệ thống blockchain chưa được cấu hình", 500);
 
-    // Kiểm tra xem người dùng có đơn hàng nào hợp lệ (đã hoàn thành và chưa đánh giá) không
+    // Kiểm tra quyền đánh giá (Đã hoàn thành đơn hàng và chưa đánh giá)
     const order = await Order.findOne({
       userId, productId, status: "completed", reviewStatus: "pending",
     });
     if (!order) return Response.error(res, "Bạn chưa có đơn hàng hợp lệ để đánh giá", 403);
 
-    // Kiểm tra chéo trên Blockchain để đảm bảo Order ID này chưa từng được dùng để đánh giá
-    const alreadyOnChain = await contract.hasReviewed(order._id.toString());
-    if (alreadyOnChain) return Response.error(res, "Order này đã được đánh giá trên blockchain từ trước", 400);
+    // BƯỚC 1: LƯU NHÁP VÀO MONGODB (DRAFT)
+    // Lưu trước để đảm bảo nội dung đánh giá được giữ lại trong DB local
+    newReview = await Review.create({
+      product: productId, 
+      user: userId, 
+      rating, 
+      content,
+      orderID: order._id,
+      txHash: "" // Chưa có txHash vì chưa gửi Blockchain
+    });
 
-    // BƯỚC QUAN TRỌNG: Tạo mã băm từ dữ liệu thô
+    // BƯỚC 2: TẠO MÃ BĂM (HASH) TỪ DỮ LIỆU VỪA LƯU
     const reviewHash = generateReviewHash(order._id, userId, productId, rating, content);
 
-    // Gửi giao dịch lên Smart Contract (Cần đợi xác nhận block)
-    const tx = await contract.submitReview(order._id.toString(), productId.toString(), reviewHash);
-    await tx.wait();
+    // BƯỚC 3: GỬI LÊN BLOCKCHAIN (TRY-CATCH RIÊNG)
+    try {
+      // Gửi giao dịch và đợi xác nhận từ mạng lưới
+      const tx = await contract.submitReview(order._id.toString(), productId.toString(), reviewHash);
+      await tx.wait();
 
-    // Lưu thông tin chi tiết vào MongoDB kèm theo mã giao dịch (txHash)
-    const newReview = await Review.create({
-      product: productId, user: userId, rating, content,
-      orderID: order._id, txHash: tx.hash,
-    });
-    await newReview.populate("user", "walletAddress");
+      // BƯỚC 4: HOÀN TẤT (COMMIT)
+      // Cập nhật txHash và đánh dấu đơn hàng thành công
+      newReview.txHash = tx.hash;
+      await newReview.save();
+      await newReview.populate("user", "walletAddress");
 
-    // Đánh dấu đơn hàng đã được review để tránh đánh giá lặp lại
-    order.reviewStatus = "reviewed";
-    await order.save();
+      order.reviewStatus = "reviewed";
+      await order.save();
 
-    return Response.success(res, "Đánh giá của bạn đã được ghi nhận on-chain", {
-      review: newReview,
-      txHash: tx.hash
-    }, 201);
+      return Response.success(res, "Đánh giá của bạn đã được ghi nhận on-chain", {
+        review: newReview,
+        txHash: tx.hash
+      }, 201);
+
+    } catch (blockchainError) {
+      // BƯỚC 5: HOÀN TÁC (ROLLBACK)
+      // Nếu Blockchain lỗi (nonce, gas, mạng...), xóa bản ghi nháp ở MongoDB để tránh sai lệch
+      if (newReview) {
+        await Review.findByIdAndDelete(newReview._id);
+      }
+      console.error("🚨 LỖI BLOCKCHAIN - ĐÃ HOÀN TÁC MONGODB:", blockchainError.message);
+      return Response.error(res, "Lỗi kết nối Blockchain. Vui lòng thử lại sau.", 500, blockchainError.message);
+    }
+
   } catch (err) {
     if (err.code === 11000) {
       return Response.error(res, "Bạn đã thực hiện đánh giá cho đơn hàng này rồi.", 400);
     }
-    return Response.error(res, "Lỗi khi gửi đánh giá", 500, err);
+    return Response.error(res, "Lỗi hệ thống khi xử lý đánh giá", 500, err);
   }
 };
 
