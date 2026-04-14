@@ -1,4 +1,7 @@
-/* ---------------- Shared Styles ---------------- */
+html {
+    scroll-behavior: smooth;
+}
+
 :root {
     /* BlockRate Premium Light Design System Tokens */
     --bs-primary: #2D31FC;
