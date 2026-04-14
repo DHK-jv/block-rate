@@ -1,6 +1,11 @@
 import User from "../models/user.model.js";
 import { verifyToken } from "../utils/Jwt.util.js";
 
+/**
+ * MIDDLEWARE BẢO VỆ ROUTE (API)
+ * Yêu cầu người dùng phải đăng nhập (qua Header Authorization hoặc Cookie).
+ * Nếu không có token hoặc token không hợp lệ, trả về lỗi 401.
+ */
 export const protect = async (req, res, next) => {
   let token;
   if (req.headers.authorization?.startsWith("Bearer ")) {
@@ -19,6 +24,10 @@ export const protect = async (req, res, next) => {
   next();
 };
 
+/**
+ * MIDDLEWARE BẢO VỆ TRANG (REDIRECT)
+ * Tương tự protect nhưng sẽ chuyển hướng (redirect) về trang login thay vì trả về JSON.
+ */
 export const protectPage = async (req, res, next) => {
   const token = req.cookies?.jwt;
   if (!token) return res.redirect("/login");
@@ -31,6 +40,11 @@ export const protectPage = async (req, res, next) => {
   next();
 };
 
+/**
+ * MIDDLEWARE GẮN THÔNG TIN NGƯỜI DÙNG VÀO LOCALS
+ * Dùng để hiển thị thông tin người dùng (ví dụ: Địa chỉ ví trên Header) ở mọi trang.
+ * Không chặn truy cập nếu người dùng chưa đăng nhập.
+ */
 export const attachUser = async (req, res, next) => {
   const token = req.cookies?.jwt;
   if (token) {
@@ -45,6 +59,10 @@ export const attachUser = async (req, res, next) => {
   next();
 };
 
+/**
+ * PHÂN QUYỀN TRUY CẬP (ROLES)
+ * Kiểm tra xem người dùng có quyền (role) phù hợp để thực hiện hành động không.
+ */
 export const restrictTo = (...roles) => (req, res, next) => {
   if (!roles.includes(req.user.role)) {
     return res.status(403).json({ success: false, message: "Bạn không có quyền truy cập" });

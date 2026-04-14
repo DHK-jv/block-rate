@@ -1,11 +1,12 @@
 import User from "../../models/user.model.js";
 import { sendTokenResponse } from "../../utils/Jwt.util.js";
+import * as Response from "../../utils/response.util.js";
 
 export const walletLogin = async (req, res) => {
   try {
     const { address } = req.body;
     if (!address) {
-      return res.status(400).json({ success: false, message: "Missing wallet address" });
+      return Response.error(res, "Thiếu địa chỉ ví", 400);
     }
 
     const lowerAddress = address.toLowerCase();
@@ -18,14 +19,13 @@ export const walletLogin = async (req, res) => {
 
     return sendTokenResponse(res, user, 200);
   } catch (err) {
-    console.error("[walletLogin]", err);
-    return res.status(500).json({ success: false, message: "Server Error" });
+    return Response.error(res, "Lỗi khi đăng nhập bằng ví", 500, err);
   }
 };
 
 export const logout = (req, res) => {
   res.clearCookie("jwt", { httpOnly: true, sameSite: "lax" });
-  return res.status(200).json({ success: true, message: "Đã đăng xuất" });
+  return Response.success(res, "Đã đăng xuất thành công");
 };
 
 export const loginPage = (req, res) => {

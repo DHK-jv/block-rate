@@ -1,39 +1,25 @@
-import { ethers } from "ethers";
 import Product from "../../models/product.model.js";
 import Review from "../../models/review.model.js";
 import Order from "../../models/order.model.js";
 import User from "../../models/user.model.js";
+import { contract } from "../../config/blockchain.config.js";
+import * as Response from "../../utils/response.util.js";
+import { generateReviewHash } from "../../utils/crypto.util.js";
 
-const abi = [
-  "function submitReview(string calldata orderId, string calldata productId, bytes32 reviewHash) external",
-  "function hasReviewed(string calldata orderId) external view returns (bool)",
-  "function getReviewByOrder(string calldata orderId) external view returns (uint256, bytes32, address, uint256)",
-];
-
-const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
-let wallet, contract;
-try {
-  if (process.env.PRIVATE_KEY) {
-    wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
-    if (process.env.CONTRACT_ADDRESS) {
-      contract = new ethers.Contract(process.env.CONTRACT_ADDRESS, abi, wallet);
-    }
-  } else {
-    console.warn("⚠️ PRIVATE_KEY not found. Blockchain features disabled.");
-  }
-} catch (error) {
-  console.error("⚠️ Ethereum wallet init error:", error.message);
-}
-
+/**
+ * HIỂN THỊ CHI TIẾT SẢN PHẨM VÀ DANH SÁCH ĐÁNH GIÁ
+ */
 export const detail = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
-    if (!product) return res.status(404).send("Product not found");
+    if (!product) return res.status(404).send("Sản phẩm không tồn tại");
 
     const reviews = await Review.find({ product: req.params.id }).populate("user", "walletAddress");
 
     let hasBought = false;
     let pendingReviewCount = 0;
+    
+    // Nếu người dùng đã đăng nhập, kiểm tra lịch sử mua hàng để mở khóa quyền đánh giá
     if (res.locals.currentUser) {
       const allCompletedOrders = await Order.find({
         userId: res.locals.currentUser._id,
@@ -43,23 +29,27 @@ export const detail = async (req, res) => {
 
       if (allCompletedOrders.length > 0) {
         hasBought = true;
-        // Đếm số đơn chưa đánh giá đễ có 'token' đánh giá
+        // Mỗi lượt mua hàng "completed" mà chưa đánh giá sẽ được tính là 1 quyền đánh giá
         pendingReviewCount = allCompletedOrders.filter(o => o.reviewStatus === "pending").length;
       }
     }
 
     res.render("./client/pages/product/product-detail", { product, reviews, hasBought, pendingReviewCount });
   } catch (error) {
-    console.error(error);
-    res.status(500).send("Server error");
+    console.error("[detail]", error);
+    res.status(500).send("Lỗi máy chủ khi tải chi tiết sản phẩm");
   }
 };
 
+/**
+ * XỬ LÝ MUA HÀNG (MÔ PHỎNG GIAO DỊCH THÀNH CÔNG)
+ */
 export const buy = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
-    if (!product) return res.status(404).json({ success: false, message: "Sản phẩm không tồn tại" });
+    if (!product) return Response.error(res, "Sản phẩm không tồn tại", 404);
 
+    // Tạo đơn hàng mới trong cơ sở dữ liệu
     await Order.create({
       userId: req.user._id,
       productId: req.params.id,
@@ -67,82 +57,100 @@ export const buy = async (req, res) => {
       status: "completed",
     });
 
+    // Cập nhật danh sách sản phẩm đã sở hữu của người dùng
     await User.findByIdAndUpdate(req.user._id, {
       $addToSet: { purchasedProducts: req.params.id },
     });
 
-    return res.json({ success: true, message: "Mua hàng thành công" });
+    return Response.success(res, "Mua hàng thành công");
   } catch (err) {
-    console.error("[buy]", err);
-    return res.status(500).json({ success: false, message: "Lỗi máy chủ" });
+    return Response.error(res, "Lỗi khi xử lý đơn hàng", 500, err);
   }
 };
 
+/**
+ * GỬI ĐÁNH GIÁ VÀ LƯU TRỮ HASH LÊN BLOCKCHAIN
+ */
 export const review = async (req, res) => {
   try {
     const { rating, content } = req.body;
     const { id: productId } = req.params;
     const userId = req.user._id;
 
-    if (!rating || !content)
-      return res.status(400).json({ success: false, message: "Vui lòng nhập đầy đủ thông tin" });
+    if (!rating || !content) return Response.error(res, "Vui lòng nhập đầy đủ thông tin", 400);
+    if (!contract) return Response.error(res, "Hệ thống blockchain chưa được cấu hình", 500);
 
-    if (!contract) return res.status(500).json({ success: false, message: "Hệ thống blockchain chưa được cấu hình" });
-
+    // Kiểm tra xem người dùng có đơn hàng nào hợp lệ (đã hoàn thành và chưa đánh giá) không
     const order = await Order.findOne({
       userId, productId, status: "completed", reviewStatus: "pending",
     });
-    if (!order)
-      return res.status(403).json({ success: false, message: "Bạn chưa có đơn hàng hợp lệ để đánh giá" });
+    if (!order) return Response.error(res, "Bạn chưa có đơn hàng hợp lệ để đánh giá", 403);
 
+    // Kiểm tra chéo trên Blockchain để đảm bảo Order ID này chưa từng được dùng để đánh giá
     const alreadyOnChain = await contract.hasReviewed(order._id.toString());
-    if (alreadyOnChain)
-      return res.status(400).json({ success: false, message: "Order đã review trên blockchain" });
+    if (alreadyOnChain) return Response.error(res, "Order này đã được đánh giá trên blockchain từ trước", 400);
 
-    const reviewHash = ethers.keccak256(
-      ethers.toUtf8Bytes(`${order._id.toString()}-${userId.toString()}-${productId.toString()}-${rating}-${content.trim()}`)
-    );
+    // BƯỚC QUAN TRỌNG: Tạo mã băm từ dữ liệu thô
+    const reviewHash = generateReviewHash(order._id, userId, productId, rating, content);
 
+    // Gửi giao dịch lên Smart Contract (Cần đợi xác nhận block)
     const tx = await contract.submitReview(order._id.toString(), productId.toString(), reviewHash);
     await tx.wait();
 
+    // Lưu thông tin chi tiết vào MongoDB kèm theo mã giao dịch (txHash)
     const newReview = await Review.create({
       product: productId, user: userId, rating, content,
       orderID: order._id, txHash: tx.hash,
     });
     await newReview.populate("user", "walletAddress");
 
+    // Đánh dấu đơn hàng đã được review để tránh đánh giá lặp lại
     order.reviewStatus = "reviewed";
     await order.save();
 
-    return res.status(201).json({ success: true, review: newReview, txHash: tx.hash });
+    return Response.success(res, "Đánh giá của bạn đã được ghi nhận on-chain", {
+      review: newReview,
+      txHash: tx.hash
+    }, 201);
   } catch (err) {
-    console.error("[review]", err);
-    return res.status(500).json({ success: false, message: "Lỗi máy chủ" });
+    return Response.error(res, "Lỗi khi gửi đánh giá", 500, err);
   }
 };
 
+/**
+ * XÁC MINH TÍNH TOÀN VẸN CỦA ĐÁNH GIÁ (BLOCKCHAIN AUDIT)
+ */
 export const verifyReview = async (req, res) => {
   try {
     const reviewDoc = await Review.findById(req.params.id);
-    if (!reviewDoc || !reviewDoc.orderID || !reviewDoc.user) return res.json({ success: false, message: "Nhận xét thiếu dữ liệu gốc" });
+    if (!reviewDoc) return Response.error(res, "Nhận xét không tồn tại", 404);
 
-    const localHash = ethers.keccak256(
-      ethers.toUtf8Bytes(`${reviewDoc.orderID.toString()}-${reviewDoc.user.toString()}-${reviewDoc.product.toString()}-${reviewDoc.rating}-${reviewDoc.content.trim()}`)
+    // BƯỚC 1: Tính toán lại mã băm (Local Hash) từ dữ liệu hiện tại trong MongoDB
+    const localHash = generateReviewHash(
+      reviewDoc.orderID,
+      reviewDoc.user,
+      reviewDoc.product,
+      reviewDoc.rating,
+      reviewDoc.content
     );
 
-    if (!contract) return res.json({ success: false, message: "Hệ thống blockchain chưa được cấu hình" });
+    if (!contract) return Response.error(res, "Hệ thống blockchain chưa cấu hình", 500);
 
+    // BƯỚC 2: Truy vấn mã băm gốc (Chain Hash) đã được lưu trên Blockchain lúc gửi đánh giá
     const chainData = await contract.getReviewByOrder(reviewDoc.orderID.toString());
     const chainHash = chainData[1];
 
-    res.json({
+    /**
+     * BƯỚC 3: SO SÁNH
+     * Nếu localHash === chainHash: Dữ liệu trong Database hoàn toàn khớp với dữ liệu lúc người dùng gửi.
+     * Nếu khác nhau: Admin hoặc hacker đã can thiệp vào Database để sửa Rating hoặc Nội dung.
+     */
+    return res.json({
       success: localHash.toLowerCase() === chainHash.toLowerCase(),
       localHash,
       chainHash,
     });
   } catch (err) {
-    console.error("[verifyReview]", err);
-    res.json({ success: false });
+    return Response.error(res, "Lỗi khi thực hiện xác minh minh bạch", 500, err);
   }
 };
