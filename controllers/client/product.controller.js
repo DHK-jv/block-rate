@@ -156,18 +156,25 @@ export const verifyReview = async (req, res) => {
     if (!contract) return Response.error(res, "Hệ thống blockchain chưa cấu hình", 500);
 
     // BƯỚC 2: Truy vấn mã băm gốc (Chain Hash) đã được lưu trên Blockchain lúc gửi đánh giá
-    const chainData = await contract.getReviewByOrder(reviewDoc.orderID.toString());
-    const chainHash = chainData[1];
+    let chainHash = null;
+    try {
+      const chainData = await contract.getReviewByOrder(reviewDoc.orderID.toString());
+      chainHash = chainData[1];
+    } catch (err) {
+      // Nếu không tìm thấy trên Blockchain (ví dụ: sau khi reset contract), coi như không xác thực được
+      console.warn(`[verifyReview] Review for order ${reviewDoc.orderID} not found on-chain.`);
+    }
 
     /**
      * BƯỚC 3: SO SÁNH
      * Nếu localHash === chainHash: Dữ liệu trong Database hoàn toàn khớp với dữ liệu lúc người dùng gửi.
-     * Nếu khác nhau: Admin hoặc hacker đã can thiệp vào Database để sửa Rating hoặc Nội dung.
+     * Nếu khác nhau hoặc không tìm thấy: Báo lỗi tính toàn vẹn.
      */
     return res.json({
-      success: localHash.toLowerCase() === chainHash.toLowerCase(),
+      success: chainHash ? (localHash.toLowerCase() === chainHash.toLowerCase()) : false,
       localHash,
-      chainHash,
+      chainHash: chainHash || "N/A (Not Found)",
+      statusText: chainHash ? (localHash.toLowerCase() === chainHash.toLowerCase() ? "Chưa bị sửa đổi" : "Dữ liệu đã bị can thiệp") : "Không tìm thấy trên Blockchain"
     });
   } catch (err) {
     return Response.error(res, "Lỗi khi thực hiện xác minh minh bạch", 500, err);
