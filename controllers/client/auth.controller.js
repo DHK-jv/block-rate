@@ -30,7 +30,7 @@ export const logout = (req, res) => {
 
 export const loginPage = (req, res) => {
   if (res.locals.currentUser) {
-    return res.redirect("/home");
+    return res.redirect("/");
   }
   res.render("client/pages/auth/login", {
     titlePage: "Đăng nhập - BlockRate",
