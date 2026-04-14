@@ -18,7 +18,7 @@ export const detail = async (req, res) => {
 
     let hasBought = false;
     let pendingReviewCount = 0;
-    
+
     // Nếu người dùng đã đăng nhập, kiểm tra lịch sử mua hàng để mở khóa quyền đánh giá
     if (res.locals.currentUser) {
       const allCompletedOrders = await Order.find({
@@ -44,12 +44,12 @@ export const detail = async (req, res) => {
       }
     }
 
-    res.render("./client/pages/product/product-detail", { 
-      product, 
-      reviews, 
-      hasBought, 
-      pendingReviewCount, 
-      onchainReviewCount 
+    res.render("./client/pages/product/product-detail", {
+      product,
+      reviews,
+      hasBought,
+      pendingReviewCount,
+      onchainReviewCount
     });
   } catch (error) {
     console.error("[detail]", error);
@@ -110,9 +110,9 @@ export const review = async (req, res) => {
     // BƯỚC 1: LƯU NHÁP VÀO MONGODB (DRAFT)
     // Lưu trước để đảm bảo nội dung đánh giá được giữ lại trong DB local
     newReview = await Review.create({
-      product: productId, 
-      user: userId, 
-      rating, 
+      product: productId,
+      user: userId,
+      rating,
       content,
       orderID: order._id,
       txHash: "" // Chưa có txHash vì chưa gửi Blockchain
