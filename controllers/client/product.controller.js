@@ -142,18 +142,13 @@ export const review = async (req, res) => {
       }, 201);
 
     } catch (blockchainError) {
-      // BƯỚC 5: LƯU LẠI THÀNH DỮ LIỆU "CHƯA ĐỒNG BỘ" (KẾ HOẠCH MỚI CỦA USER)
-      // Không xóa MongoDB nữa để làm dữ liệu demo cờ Vàng/Đỏ
+      // BƯỚC 5: HOÀN TÁC (ROLLBACK)
+      // Nếu Blockchain lỗi (nonce, gas, mạng...), xóa bản ghi nháp ở MongoDB để tránh sai lệch
       if (newReview) {
-        // Vẫn phải đánh dấu đơn hàng đã review để tránh spam dội bom DB
-        order.reviewStatus = "reviewed";
-        await order.save();
+        await Review.findByIdAndDelete(newReview._id);
       }
-      console.error("🚨 LỖI BLOCKCHAIN - Giữ lại Mongo làm Demo:", blockchainError.message);
-      return Response.success(res, "Đã lưu nội bộ nhưng lỗi gửi lên Blockchain (Dữ liệu chưa đồng bộ)", {
-        review: newReview,
-        txHash: null
-      }, 201);
+      console.error("🚨 LỖI BLOCKCHAIN - ĐÃ HOÀN TÁC MONGODB:", blockchainError.message);
+      return Response.error(res, "Lỗi kết nối Blockchain. Vui lòng thử lại sau.", 500, blockchainError.message);
     }
 
   } catch (err) {
