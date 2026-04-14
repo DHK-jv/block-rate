@@ -54,8 +54,8 @@ block content
           p.pd-form-label.mb-2 Xếp hạng sản phẩm
           .pd-stars.mb-3#starRating
             - for (let i = 1; i <= 5; i++)
-              span.material-symbols-outlined.star-btn(data-value=i style="cursor:pointer; color:#94a3b8") star
-          input#ratingValue(type="hidden" value="4")
+              span.material-symbols-outlined.star-btn(data-value=i) star
+          input#ratingValue(type="hidden" value="0")
           
           p.pd-form-label.mb-2 Nhận xét của bạn
           textarea#reviewContent(rows="4" placeholder="Sản phẩm dùng rất tốt, giao hàng nhanh...")
@@ -188,7 +188,7 @@ block scripts
     }
 
     // ── Star Rating Interaction ──
-    var selectedRating = 4
+    var selectedRating = 0
     var stars = document.querySelectorAll('.star-btn')
     var ratingInput = document.getElementById('ratingValue')
 
@@ -216,7 +216,9 @@ block scripts
       btnSubmit.addEventListener('click', async function() {
         var content = document.getElementById('reviewContent').value.trim()
         var rating = parseInt(ratingInput.value)
-        if (!content || content.length < 5) return showToast('Nhận xét quá ngắn!', 'warning')
+
+        if (rating === 0) return showToast('Vui lòng xếp hạng sản phẩm này!', 'warning')
+        if (!content || content.length < 5) return showToast('Nhận xét quá ngắn hoặc để trống!', 'warning')
 
         btnSubmit.disabled = true
         btnSubmit.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Đang gửi...'

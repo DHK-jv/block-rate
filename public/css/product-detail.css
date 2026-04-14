@@ -161,6 +161,86 @@ body {
   box-shadow: var(--shadow-md);
 }
 
+.pd-form-label {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #1e293b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+#reviewContent {
+  width: 100%;
+  padding: 16px;
+  border: 1.5px solid var(--pd-border);
+  border-radius: 12px;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  resize: none;
+  background: #f8fafc;
+}
+
+#reviewContent:focus {
+  outline: none;
+  background: #fff;
+  border-color: var(--bs-primary);
+  box-shadow: 0 0 0 4px rgba(45, 49, 252, 0.1);
+}
+
+.pd-stars {
+  display: flex;
+  gap: 8px;
+}
+
+.star-btn {
+  font-size: 2.2rem !important;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  user-select: none;
+}
+
+.star-btn:hover {
+  transform: scale(1.25);
+  cursor: pointer;
+}
+
+.star-btn:active {
+  transform: scale(0.9);
+}
+
+.pd-form-btn {
+  background: var(--pd-accent-gradient);
+  color: #fff;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 50px;
+  font-weight: 700;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 20px rgba(45, 49, 252, 0.15);
+}
+
+.pd-form-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 25px rgba(45, 49, 252, 0.2);
+}
+
+.pd-form-btn:active {
+  transform: translateY(0);
+}
+
+.pd-form-btn .material-symbols-outlined {
+  transition: transform 0.3s ease;
+}
+
+.pd-form-btn:hover .material-symbols-outlined {
+  transform: translateX(4px) rotate(-10deg);
+}
+
 .pd-review-card {
   background: #fff;
   border: 1px solid var(--pd-border);
