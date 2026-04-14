@@ -78,9 +78,11 @@ block content
                  span.material-symbols-outlined.fs-7 info
                  span Sản phẩm chưa có đánh giá nào
             else
-              .pd-transparent-badge.bg-success.bg-opacity-10.border.border-success.rounded-3.p-2.d-flex.align-items-center.gap-2.text-success
+              .pd-transparent-badge.bg-success.bg-opacity-10.border.border-success.rounded-3.p-2.d-flex.align-items-center.gap-2.text-success.mb-2
                 span.material-symbols-outlined.fs-6 verified_user
-                span Khớp số lượng On-chain (#{reviews.length}/#{onchainReviewCount})
+                div
+                  strong Hệ thống minh bạch: 
+                  span Không có đánh giá bị che giấu (#{reviews.length}/#{onchainReviewCount} khớp Blockchain)
           else if reviews.length < onchainReviewCount
             .alert.alert-danger.rounded-3.p-2.m-0.d-flex.align-items-center.gap-2.border-danger
               span.material-symbols-outlined.fs-6 warning
