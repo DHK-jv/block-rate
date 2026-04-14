@@ -103,6 +103,10 @@ export const review = async (req, res) => {
     });
     if (!order) return Response.error(res, "Bạn chưa có đơn hàng hợp lệ để đánh giá", 403);
 
+    // Kiểm tra chéo trên Blockchain để đảm bảo Order ID này chưa từng được dùng để đánh giá
+    const alreadyOnChain = await contract.hasReviewed(order._id.toString());
+    if (alreadyOnChain) return Response.error(res, "Đơn hàng này đã được đánh giá trên blockchain từ trước", 400);
+
     // BƯỚC 1: LƯU NHÁP VÀO MONGODB (DRAFT)
     // Lưu trước để đảm bảo nội dung đánh giá được giữ lại trong DB local
     newReview = await Review.create({
