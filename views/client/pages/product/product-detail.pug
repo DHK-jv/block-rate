@@ -115,8 +115,23 @@ block content
                   span Blockchain Verify
               
               .pd-tx
-                span.material-symbols-outlined.fs-9.me-1 link
-                span= review.txHash ? review.txHash.substring(0, 14) + '...' : "N/A"
+                if review.txHash
+                  a.pd-tx-link(
+                    href=`https://explorer.cronos.org/testnet/tx/${review.txHash}`
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  )
+                    svg(width="14" height="14" viewBox="0 0 24 24" fill="none")
+                      path(d="M14 3h7v7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round")
+                      path(d="M10 14L21 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round")
+                      path(d="M21 14v7h-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round")
+                      path(d="M3 10L14 21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round")
+
+                    span.pd-tx-text.ms-1 #{review.txHash.slice(0, 8)}...#{review.txHash.slice(-6)}
+
+                  button.copy-btn(type="button" data-tx=review.txHash title="Copy TX") 📋
+                else
+                  span.pd-tx-na Tx: N/A
 
         a.pd-load-more(href="#")
           span.material-symbols-outlined.me-1(style="vertical-align: middle") expand_more
@@ -293,6 +308,29 @@ block scripts
       } catch {
         label.textContent = 'Lỗi hệ thống'
       }
+    })
+    
+    // ── Copy TxHash Logic ──
+    document.querySelector('.pd-reviews__list')?.addEventListener('click', function(e) {
+      var btn = e.target.closest('.copy-btn')
+      if (!btn) return
+      
+      var tx = btn.dataset.tx
+      if (!tx) return
+
+      navigator.clipboard.writeText(tx).then(() => {
+        var originalLabel = btn.textContent
+        btn.textContent = '✅'
+        btn.title = 'Đã copy!'
+        setTimeout(() => {
+          btn.textContent = originalLabel
+          btn.title = 'Copy TX'
+        }, 2000)
+        showToast('Đã copy mã giao dịch vào bộ nhớ tạm', 'success')
+      }).catch(err => {
+        console.error('Lỗi khi copy:', err)
+        showToast('Không thể copy tự động', 'error')
+      })
     })
 
     function appendReviewToDOM(review, txHash) {

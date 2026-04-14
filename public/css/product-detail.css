@@ -320,13 +320,56 @@ body {
 }
 
 .pd-tx {
-  background: #f8fafc;
-  border: 1px solid var(--pd-border);
-  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pd-tx-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 8px;
+  background: rgba(99, 102, 241, 0.08);
+  color: #4f46e5;
+  text-decoration: none;
+  font-weight: 600;
   font-size: 0.75rem;
-  padding: 4px 12px;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(99, 102, 241, 0.1);
+}
+
+.pd-tx-link:hover {
+  background: rgba(99, 102, 241, 0.15);
+  transform: translateY(-1px);
+  color: #4338ca;
+}
+
+.copy-btn { 
+  border: none;
+  background: rgba(139, 92, 246, 0.1);
+  color: #7c3aed;
   border-radius: 6px;
-  font-family: monospace;
+  padding: 4px 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.copy-btn:hover {
+  background: #7c3aed;
+  color: #fff;
+  transform: scale(1.05);
+}
+
+.pd-tx-na {
+  color: var(--pd-text-muted);
+  font-size: 0.75rem;
+  font-style: italic;
 }
 
 @media (max-width: 992px) {
