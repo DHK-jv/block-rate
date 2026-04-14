@@ -113,6 +113,9 @@ export const review = async (req, res) => {
       txHash: tx.hash
     }, 201);
   } catch (err) {
+    if (err.code === 11000) {
+      return Response.error(res, "Bạn đã thực hiện đánh giá cho đơn hàng này rồi.", 400);
+    }
     return Response.error(res, "Lỗi khi gửi đánh giá", 500, err);
   }
 };

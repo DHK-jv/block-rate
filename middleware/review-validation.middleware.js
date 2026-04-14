@@ -44,11 +44,11 @@ export const moderateReview = async (req, res, next) => {
               "reason": "lý do nếu bị từ chối",
               "category": "spam|offensive|fake|clean"
             }
-            Từ chối khi:
-            - Nội dung tục tĩu, xúc phạm, kỳ thị
-            - Spam (lặp ký tự, vô nghĩa, quảng cáo không liên quan)
-            - Review giả mạo rõ ràng (toàn chữ hoa, ký tự lạ)
-            - Ngôn ngữ thù ghét
+            Hướng dẫn kiểm duyệt:
+            - CHẤP NHẬN: Tiếng Việt không dấu (ví dụ: "san pham rat tot"), ngôn ngữ mạng lịch sự, đánh giá chân thật.
+            - TỪ CHỐI KHI: Nội dung tục tĩu, xúc phạm, kỳ thị, ngôn ngữ thù ghét.
+            - TỪ CHỐI KHI: Spam rõ ràng (lặp ký tự vô nghĩa như "aaaaa", quảng cáo rác, chèn link lạ).
+            - TỪ CHỐI KHI: Nội dung hoàn toàn không liên quan đến việc mua hàng.
             Chỉ trả về JSON, không giải thích thêm.`,
         },
         { role: "user", content: `Kiểm duyệt review sau: "${textToCheck}"` },
