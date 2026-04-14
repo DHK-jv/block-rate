@@ -1,0 +1,199 @@
+/* ============================================
+   Product Detail Page — Premium Light Overhaul
+   ============================================ */
+
+:root {
+  --pd-bg: #f8fafc;
+  --pd-surface: #ffffff;
+  --pd-surface-bright: #f1f5f9;
+  --pd-accent-gradient: linear-gradient(135deg, #6366f1 0%, #2D31FC 40%, #06b6d4 100%);
+  --pd-text: #334155;
+  --pd-text-muted: #64748b;
+  --pd-border: #e2e8f0;
+  --pd-radius: 1rem;
+}
+
+body {
+  background-color: var(--pd-bg);
+  color: var(--pd-text);
+}
+
+.pd-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+/* ── Hero Section ── */
+.pd-hero {
+  display: grid;
+  grid-template-columns: 1fr 450px;
+  gap: 50px;
+  margin-bottom: 60px;
+}
+
+.pd-hero__img {
+  background: #fff;
+  border-radius: var(--pd-radius);
+  overflow: hidden;
+  border: 1px solid var(--pd-border);
+  box-shadow: var(--shadow-md);
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pd-hero__img img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+/* ── Info Panel ── */
+.pd-hero__info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.pd-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: #1e293b;
+}
+
+.pd-id {
+  font-family: 'Courier New', monospace;
+  font-size: 0.7rem;
+  color: var(--pd-text-muted);
+  background: #f1f5f9;
+  padding: 4px 12px;
+  border-radius: 50px;
+  width: fit-content;
+}
+
+.pd-price {
+  display: flex;
+  align-items: baseline;
+  gap: 15px;
+}
+
+.pd-price__current {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--bs-primary);
+}
+
+.pd-price__original {
+  text-decoration: line-through;
+  color: #94a3b8;
+  font-size: 1.1rem;
+}
+
+.pd-desc {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #475569;
+  background: #fff;
+  padding: 24px;
+  border-radius: var(--pd-radius);
+  border: 1px solid var(--pd-border);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ── CTA Button ── */
+.pd-cta {
+  background: var(--pd-accent-gradient);
+  color: #fff;
+  border: none;
+  padding: 16px 32px;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 20px rgba(45, 49, 252, 0.2);
+}
+
+/* ── Seller Panel ── */
+.pd-seller-panel {
+  background: #fff;
+  border: 1px solid var(--pd-border);
+  border-radius: var(--pd-radius);
+  padding: 25px;
+  margin-bottom: 40px;
+  box-shadow: var(--shadow-sm);
+}
+
+.pd-badge-blockchain {
+  background: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
+  padding: 4px 12px;
+  border-radius: 50px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ── Reviews ── */
+.pd-reviews {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 40px;
+}
+
+.pd-reviews__form {
+  background: #fff;
+  border: 1px solid var(--pd-border);
+  border-radius: var(--pd-radius);
+  padding: 30px;
+  height: fit-content;
+  box-shadow: var(--shadow-md);
+}
+
+.pd-review-card {
+  background: #fff;
+  border: 1px solid var(--pd-border);
+  border-radius: var(--pd-radius);
+  padding: 25px;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.pd-review-card:hover {
+  transform: translateX(10px);
+  box-shadow: var(--shadow-md);
+}
+
+.pd-reviewer__avatar {
+  background: var(--pd-accent-gradient);
+  color: #fff;
+  font-weight: 800;
+}
+
+.pd-verified {
+  background: #f0f7ff;
+  border: 1px solid #dbeafe;
+  color: #1d4ed8;
+}
+
+.pd-tx {
+  background: #f8fafc;
+  border: 1px solid var(--pd-border);
+  color: #64748b;
+}
+
+@media (max-width: 992px) {
+  .pd-hero { grid-template-columns: 1fr; }
+  .pd-reviews { grid-template-columns: 1fr; }
+}

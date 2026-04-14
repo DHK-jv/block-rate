@@ -1,0 +1,138 @@
+/* ---------------- Shared Styles ---------------- */
+:root {
+    /* BlockRate Premium Light Design System Tokens */
+    --bs-primary: #2D31FC;
+    --bs-secondary: #0ea5e9;
+    --accent-gradient: linear-gradient(135deg, #6366f1 0%, #2D31FC 40%, #06b6d4 100%);
+    
+    --background: #f8fafc;
+    --surface: #ffffff;
+    --surface-bright: #ffffff;
+    --on-surface: #334155;
+    --on-surface-muted: #64748b;
+    
+    --border: #e2e8f0;
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-blur: blur(12px);
+    
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+    --border-radius-xl: 1rem;
+    --border-radius-2xl: 1.5rem;
+}
+
+body { 
+    font-family: 'Inter', sans-serif; 
+    background-color: var(--background); 
+    color: var(--on-surface);
+    padding-top: 80px;
+    letter-spacing: -0.01em;
+}
+
+h1, h2, h3, h4, .font-headline { 
+    font-family: 'Manrope', sans-serif; 
+    font-weight: 800;
+}
+
+.material-symbols-outlined { 
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; 
+    vertical-align: middle;
+}
+
+/* Premium Light Components */
+.glass-nav { 
+    background: rgba(255, 255, 255, 0.85); 
+    backdrop-filter: var(--glass-blur); 
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+}
+
+.glass-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--border-radius-xl);
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.3s ease;
+}
+
+/* Buttons */
+.btn-primary-gradient {
+    background: var(--accent-gradient);
+    border: none;
+    color: #fff;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(45, 49, 252, 0.2);
+}
+.btn-primary-gradient:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(45, 49, 252, 0.4);
+    color: #fff;
+}
+
+/* Hover Effects */
+.hover-scale {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.hover-scale:hover { 
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+}
+
+/* Utilities */
+.fs-7 { font-size: 0.875rem !important; }
+.fs-8 { font-size: 0.75rem !important; }
+.fs-9 { font-size: 0.625rem !important; }
+
+.rounded-4xl { border-radius: 2rem !important; }
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--background); }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--bs-primary); }
+
+/* Header Wallet Button */
+.btn-wallet-nav {
+    background: #fff;
+    border: 1.5px solid var(--border);
+    border-radius: 50px;
+    padding: 6px 16px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    color: var(--on-surface);
+    box-shadow: var(--shadow-sm);
+}
+.btn-wallet-nav:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+}
+.btn-wallet-nav.connected {
+    border-color: #22c55e;
+    color: #16a34a;
+    background: #f0fdf4;
+}
+.wallet-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #94a3b8;
+    display: inline-block;
+}
+.btn-wallet-nav.connected .wallet-dot {
+    background: #22c55e;
+    box-shadow: 0 0 0 3px rgba(34,197,94,0.2);
+}
+
+.hover-primary { transition: color 0.2s; }
+.hover-primary:hover { color: var(--bs-primary) !important; opacity: 1 !important; }
+
+@media (max-width: 992px) {
+    .ratio { margin-bottom: 1rem; }
+}

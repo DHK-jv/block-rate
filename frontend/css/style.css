@@ -1,0 +1,127 @@
+/* Shared Styles for BlockRate - Bootstrap Transition */
+
+:root {
+    /* M3 Color Theme Variables */
+    --bs-primary: #2D31FC;
+    --bs-secondary: #005cb8;
+    --surface-bright: #f8f9fa;
+    --on-primary-container: #eeefff;
+    --surface-container-high: #e7e8e9;
+    --tertiary: #943700;
+    --surface-variant: #e1e3e4;
+    --outline: #737686;
+    --on-surface-variant: #434655;
+    --on-secondary: #ffffff;
+    --surface-dim: #d9dadb;
+    --on-tertiary-container: #ffede6;
+    --on-primary-fixed-variant: #003ea8;
+    --on-error: #ffffff;
+    --on-secondary-container: #0061a4;
+    --inverse-on-surface: #f0f1f2;
+    --on-primary: #ffffff;
+    --inverse-primary: #b4c5ff;
+    --surface-tint: #2D31FC;
+    --surface-container: #edeeef;
+    --secondary-container: #6bff8f;
+    --on-secondary-fixed-variant: #00467a;
+    --surface-container-highest: #e1e3e4;
+    --primary-fixed-dim: #b4c5ff;
+    --on-error-container: #93000a;
+    --outline-variant: #c3c6d7;
+    --primary-container: #2D31FC;
+    --error: #ba1a1a;
+    --tertiary-fixed-dim: #ffb596;
+    --on-surface: #191c1d;
+    --surface-container-lowest: #ffffff;
+    --surface: #f8f9fa;
+    --background: #f8f9fa;
+    --secondary-fixed: #d2e4ff;
+    --on-background: #191c1d;
+    --inverse-surface: #2e3132;
+    --surface-container-low: #f3f4f5;
+    --tertiary-container: #bc4800;
+    --on-tertiary-fixed: #360f00;
+    --tertiary-fixed: #ffdbcd;
+    --on-secondary-fixed: #001d36;
+    --on-primary-fixed: #00174b;
+    --secondary-fixed-dim: #9ecaff;
+    --primary-fixed: #dbe1ff;
+    --on-tertiary-fixed-variant: #7d2d00;
+
+    /* Custom spacing and overrides */
+    --border-radius-xl: 2rem;
+}
+
+body { 
+    font-family: 'Inter', sans-serif; 
+    background-color: var(--surface); 
+    color: var(--on-surface);
+}
+
+.font-headline { 
+    font-family: 'Manrope', sans-serif; 
+}
+
+.material-symbols-outlined { 
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; 
+    vertical-align: middle;
+}
+
+/* Custom Component Classes */
+.glass-nav { 
+    background: rgba(255, 255, 255, 0.8); 
+    backdrop-filter: blur(20px); 
+    -webkit-backdrop-filter: blur(20px);
+}
+
+.hero-gradient {
+    background-image: radial-gradient(circle at 2px 2px, #2D31FC 1px, transparent 0);
+    background-size: 40px 40px;
+}
+
+/* Material Design 3 Utility Mappings */
+.bg-primary-container { background-color: var(--primary-container) !important; }
+.text-primary-container { color: var(--primary-container) !important; }
+.bg-surface-container-low { background-color: var(--surface-container-low) !important; }
+.bg-surface-container-lowest { background-color: var(--surface-container-lowest) !important; }
+.bg-secondary-fixed { background-color: var(--secondary-fixed) !important; }
+.text-secondary-fixed { color: var(--secondary-fixed) !important; }
+.text-on-surface { color: var(--on-surface) !important; }
+.bg-surface { background-color: var(--surface) !important; }
+
+/* Custom Overrides */
+.rounded-3xl { border-radius: 1.5rem !important; }
+.rounded-4xl { border-radius: 2rem !important; }
+
+/* Utility Classes */
+.fs-7 { font-size: 0.875rem !important; }
+.fs-8 { font-size: 0.75rem !important; }
+.fs-9 { font-size: 0.625rem !important; }
+
+.bg-hover-light:hover { background-color: rgba(0,0,0,0.05) !important; }
+.hover-opacity-100:hover { opacity: 1 !important; }
+
+.shadow-md { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06) !important; }
+.hover-scale { transition: transform 0.3s ease; }
+.hover-scale:hover { transform: scale(1.05); }
+
+/* Placeholder Styles */
+.placeholder-white::placeholder {
+    color: rgba(255, 255, 255, 0.6) !important;
+    opacity: 1 !important;
+}
+
+/* Product Page Button Fix */
+.btn-load-more {
+    transition: all 0.3s ease;
+}
+.btn-load-more:hover {
+    background-color: var(--bs-primary) !important;
+    color: white !important;
+}
+
+/* Custom spacings */
+.pt-24 { padding-top: 6rem !important; }
+.pb-20 { padding-bottom: 5rem !important; }
+.mb-20 { margin-bottom: 5rem !important; }
+.mb-12 { margin-bottom: 3rem !important; }

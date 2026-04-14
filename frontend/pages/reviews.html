@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Feed đánh giá | BlockRate</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Manrope:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <link href="../css/style.css" rel="stylesheet"/>
+    <script src="../js/main.js" defer></script>
+    <script src="../js/reviews.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+</head>
+<body class="text-on-surface bg-surface">
+    <!-- TopNavBar -->
+    <nav class="fixed-top w-100 glass-nav shadow-sm">
+        <div class="container d-flex justify-content-between align-items-center px-4 py-3">
+            <div class="d-flex align-items-center gap-4">
+                <a class="text-2xl font-black tracking-tight text-primary font-headline text-decoration-none" href="../home.html">BlockRate</a>
+                <div class="d-none d-md-flex align-items-center gap-4">
+                    <a class="text-secondary font-headline fs-7 text-decoration-none transition-colors opacity-75 hover-opacity-100" href="../home.html">Trang chủ</a>
+                    <a class="text-secondary font-headline fs-7 text-decoration-none transition-colors opacity-75 hover-opacity-100" href="products.html">Khám phá</a>
+                    <a class="text-primary font-bold border-bottom border-2 border-primary font-headline fs-7 text-decoration-none" href="reviews.html">Đánh giá</a>
+                </div>
+            </div>
+            <div class="d-flex align-items-center gap-3">
+                <a href="login.html" class="px-3 py-2 text-secondary font-headline fs-7 text-decoration-none rounded-pill transition-all bg-hover-light">Đăng nhập</a>
+                <a href="signup.html" class="px-4 py-2 bg-primary-container text-white font-headline fs-7 font-bold rounded-pill text-decoration-none shadow-md hover-scale">Đăng ký</a>
+                <button id="mobile-menu-btn" class="d-md-none p-2 text-secondary border-0 bg-transparent rounded-circle transition-colors bg-hover-light">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="d-none d-md-none position-absolute top-100 start-0 w-100 bg-white shadow-lg border-top p-4 space-y-3">
+            <a class="d-block text-secondary font-medium text-decoration-none" href="../home.html">Trang chủ</a>
+            <a class="d-block text-secondary font-medium text-decoration-none" href="products.html">Khám phá</a>
+            <a class="d-block text-secondary font-bold text-decoration-none" href="reviews.html">Đánh giá</a>
+        </div>
+    </nav>
+
+    <main class="pt-5 mt-5 pb-5">
+        <div class="container" style="max-width: 1000px;">
+            <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-4 mb-5 px-4">
+                <div>
+                    <h1 class="h1 fw-black font-headline mb-2">Cộng đồng đánh giá</h1>
+                    <p class="text-secondary opacity-75 mb-0">Mọi phản hồi đều được xác thực và minh bạch tuyệt đối.</p>
+                </div>
+            <div class="d-flex flex-wrap gap-2 mb-4 px-4 overflow-auto pb-2" id="review-filters">
+                <button class="btn btn-primary rounded-pill px-4 py-2 fs-7 fw-bold filter-btn active" data-filter="all">Tất cả</button>
+                <button class="btn btn-outline-secondary rounded-pill px-4 py-2 fs-7 fw-semibold filter-btn" data-filter="verified">Đã xác thực</button>
+                <button class="btn btn-outline-secondary rounded-pill px-4 py-2 fs-7 fw-semibold filter-btn" data-filter="newest">Mới nhất</button>
+            </div>
+            </div>
+
+            <div class="vstack gap-4 px-4" id="review-feed">
+                <!-- Review Card 1 -->
+                <div class="card border-0 bg-surface-container-low p-4 p-md-5 rounded-4xl shadow-sm review-card" data-verified="true" data-timestamp="2024-03-24T14:30:00">
+                    <div class="d-flex justify-content-between align-items-start mb-4">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="d-flex align-items-center justify-content-center bg-primary bg-opacity-10 text-primary fw-bold rounded-circle" style="width: 48px; height: 48px;">JD</div>
+                            <div>
+                                <h3 class="fw-bold fs-5 mb-0">John Doe</h3>
+                                <p class="fs-9 font-monospace text-secondary opacity-50 mb-0">0x81A...C39d • 2 giờ trước</p>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-1 text-warning">
+                            <span class="material-symbols-outlined fs-7" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="material-symbols-outlined fs-7" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="material-symbols-outlined fs-7" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="material-symbols-outlined fs-7" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="material-symbols-outlined fs-7" style="font-variation-settings: 'FILL' 1;">star</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-4 mb-4 align-items-center bg-white bg-opacity-50 p-3 rounded-4">
+                        <div class="rounded-3 flex-shrink-0 overflow-hidden" style="width: 64px; height: 64px;">
+                            <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=800&q=80" class="object-fit-cover w-100 h-100" alt="Ethereum Hardware Wallet X-200">
+                        </div>
+                        <div>
+                            <p class="fs-9 fw-bold text-primary mb-1 text-uppercase tracking-widest">Sản phẩm đánh giá</p>
+                            <h4 class="fw-bold text-dark mb-0 fs-6">Ethereum Hardware Wallet X-200</h4>
+                        </div>
+                    </div>
+                    <p class="text-secondary fs-5 fst-italic mb-4 lh-base">
+                        "Thiết bị tuyệt vời, đóng gói rất kỹ. Tôi đã kiểm tra Transaction ID trên blockchain và hoàn toàn tin tưởng vào độ thật của sản phẩm."
+                    </p>
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge rounded-pill bg-primary bg-opacity-10 text-primary border border-primary border-opacity-20 px-3 py-2 fs-9 fw-bold d-inline-flex align-items-center gap-1 shadow-sm">
+                            <span class="material-symbols-outlined fs-8" style="font-variation-settings: 'FILL' 1;">verified</span>
+                            XÁC THỰC BLOCKCHAIN
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Review Card 2 -->
+                <div class="card border-0 bg-surface-container-low p-4 p-md-5 rounded-4xl shadow-sm review-card" data-verified="false" data-timestamp="2024-03-24T12:00:00">
+                    <div class="d-flex justify-content-between align-items-start mb-4">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="d-flex align-items-center justify-content-center bg-secondary bg-opacity-10 text-secondary fw-bold rounded-circle" style="width: 48px; height: 48px;">MT</div>
+                            <div>
+                                <h3 class="fw-bold fs-5 mb-0">Minh Tú</h3>
+                                <p class="fs-9 font-monospace text-secondary opacity-50 mb-0">0x12A...9b3E • 5 giờ trước</p>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-1 text-warning">
+                            <span class="material-symbols-outlined fs-7" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="material-symbols-outlined fs-7" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="material-symbols-outlined fs-7" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="material-symbols-outlined fs-7" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="material-symbols-outlined fs-7">star</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-4 mb-4 align-items-center bg-white bg-opacity-50 p-3 rounded-4">
+                        <div class="rounded-3 flex-shrink-0 overflow-hidden" style="width: 64px; height: 64px;">
+                            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80" class="object-fit-cover w-100 h-100" alt="Tai nghe Studio Pro X">
+                        </div>
+                        <div>
+                            <p class="fs-9 fw-bold text-primary mb-1 text-uppercase tracking-widest">Sản phẩm đánh giá</p>
+                            <h4 class="fw-bold text-dark mb-0 fs-6">Tai nghe Studio Pro X</h4>
+                        </div>
+                    </div>
+                    <p class="text-secondary fs-5 fst-italic mb-4 lh-base">
+                        "Âm thanh tốt, thiết kế hiện đại. Chỉ tiếc là thời gian giao hàng hơi chậm một chút. Tổng quan là hài lòng."
+                    </p>
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge rounded-pill bg-light text-secondary border px-3 py-2 fs-9 fw-bold d-inline-flex align-items-center gap-1 shadow-sm opacity-50">
+                            <span class="material-symbols-outlined fs-8">pending</span>
+                            CHỜ XÁC THỰC
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Review Card 3 -->
+                <div class="card border-0 bg-surface-container-low p-4 p-md-5 rounded-4xl shadow-sm review-card" data-verified="true" data-timestamp="2024-03-24T11:00:00">
+                    <div class="d-flex justify-content-between align-items-start mb-4">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="d-flex align-items-center justify-content-center bg-primary bg-opacity-10 text-primary fw-bold rounded-circle" style="width: 48px; height: 48px;">NH</div>
+                            <div>
+                                <h3 class="fw-bold fs-5 mb-0">Nguyễn Hoàng</h3>
+                                <p class="fs-9 font-monospace text-secondary opacity-50 mb-0">0x71C...4f2D • 4 giờ trước</p>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-1 text-warning">
+                            <span class="material-symbols-outlined fs-7" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="material-symbols-outlined fs-7" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="material-symbols-outlined fs-7" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="material-symbols-outlined fs-7" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="material-symbols-outlined fs-7" style="font-variation-settings: 'FILL' 1;">star</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-4 mb-4 align-items-center bg-white bg-opacity-50 p-3 rounded-4">
+                        <div class="rounded-3 flex-shrink-0 overflow-hidden" style="width: 64px; height: 64px;">
+                            <img src="https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&w=800&q=80" class="object-fit-cover w-100 h-100" alt="Smartphone Galaxy S23">
+                        </div>
+                        <div>
+                            <p class="fs-9 fw-bold text-primary mb-1 text-uppercase tracking-widest">Sản phẩm đánh giá</p>
+                            <h4 class="fw-bold text-dark mb-0 fs-6">Smartphone Galaxy S23</h4>
+                        </div>
+                    </div>
+                    <p class="text-secondary fs-5 fst-italic mb-4 lh-base">
+                        "Chụp ảnh đẹp, màn hình rực rỡ. Đã kiểm tra QR code trên hộp và thấy thông tin được ghi nhận trên blockchain. Dịch vụ chăm sóc khách hàng tốt."
+                    </p>
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge rounded-pill bg-primary bg-opacity-10 text-primary border border-primary border-opacity-20 px-3 py-2 fs-9 fw-bold d-inline-flex align-items-center gap-1 shadow-sm">
+                            <span class="material-symbols-outlined fs-8" style="font-variation-settings: 'FILL' 1;">verified</span>
+                            XÁC THỰC BLOCKCHAIN
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Review Card 4 -->
+                <div class="card border-0 bg-surface-container-low p-4 p-md-5 rounded-4xl shadow-sm review-card d-none" data-verified="true" data-timestamp="2024-03-24T09:00:00">
+                    <div class="d-flex justify-content-between align-items-start mb-4">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="d-flex align-items-center justify-content-center bg-primary bg-opacity-10 text-primary fw-bold rounded-circle" style="width: 48px; height: 48px;">LD</div>
+                            <div>
+                                <h3 class="fw-bold fs-5 mb-0">Lê Duy</h3>
+                                <p class="fs-9 font-monospace text-secondary opacity-50 mb-0">0x92B...A11c • 6 giờ trước</p>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-1 text-warning">
+                            <span class="material-symbols-outlined fs-7" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="material-symbols-outlined fs-7" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="material-symbols-outlined fs-7" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="material-symbols-outlined fs-7" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="material-symbols-outlined fs-7" style="font-variation-settings: 'FILL' 1;">star</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-4 mb-4 align-items-center bg-white bg-opacity-50 p-3 rounded-4">
+                        <div class="rounded-3 flex-shrink-0 overflow-hidden" style="width: 64px; height: 64px;">
+                            <img src="https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?auto=format&fit=crop&w=800&q=80" class="object-fit-cover w-100 h-100" alt="Bàn phím cơ Aurora RGB">
+                        </div>
+                        <div>
+                            <p class="fs-9 fw-bold text-primary mb-1 text-uppercase tracking-widest">Sản phẩm đánh giá</p>
+                            <h4 class="fw-bold text-dark mb-0 fs-6">Bàn phím cơ Aurora RGB</h4>
+                        </div>
+                    </div>
+                    <p class="text-secondary fs-5 fst-italic mb-4 lh-base">
+                        "Switch gõ rất đầm tay, LED RGB rực rỡ và dễ tùy chỉnh. Việc có chứng chỉ blockchain giúp mình yên tâm đây là hàng chính hãng 100%."
+                    </p>
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge rounded-pill bg-primary bg-opacity-10 text-primary border border-primary border-opacity-20 px-3 py-2 fs-9 fw-bold d-inline-flex align-items-center gap-1 shadow-sm">
+                            <span class="material-symbols-outlined fs-8" style="font-variation-settings: 'FILL' 1;">verified</span>
+                            XÁC THỰC BLOCKCHAIN
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Review Card 5 -->
+                <div class="card border-0 bg-surface-container-low p-4 p-md-5 rounded-4xl shadow-sm review-card d-none" data-verified="true" data-timestamp="2024-03-24T08:00:00">
+                    <div class="d-flex justify-content-between align-items-start mb-4">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="d-flex align-items-center justify-content-center bg-primary bg-opacity-10 text-primary fw-bold rounded-circle" style="width: 48px; height: 48px;">MP</div>
+                            <div>
+                                <h3 class="fw-bold fs-5 mb-0">Mai Phương</h3>
+                                <p class="fs-9 font-monospace text-secondary opacity-50 mb-0">0x33F...D99b • 7 giờ trước</p>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-1 text-warning">
+                            <span class="material-symbols-outlined fs-7" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="material-symbols-outlined fs-7" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="material-symbols-outlined fs-7" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="material-symbols-outlined fs-7" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="material-symbols-outlined fs-7" style="font-variation-settings: 'FILL' 1;">star</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-4 mb-4 align-items-center bg-white bg-opacity-50 p-3 rounded-4">
+                        <div class="rounded-3 flex-shrink-0 overflow-hidden" style="width: 64px; height: 64px;">
+                            <img src="https://images.unsplash.com/photo-1612817288484-6f916006741a?auto=format&fit=crop&w=800&q=80" class="object-fit-cover w-100 h-100" alt="Serum Trẻ Hóa Da">
+                        </div>
+                        <div>
+                            <p class="fs-9 fw-bold text-primary mb-1 text-uppercase tracking-widest">Sản phẩm đánh giá</p>
+                            <h4 class="fw-bold text-dark mb-0 fs-6">Serum Trẻ Hóa Da</h4>
+                        </div>
+                    </div>
+                    <p class="text-secondary fs-5 fst-italic mb-4 lh-base">
+                        "Cấp ẩm tốt, da mịn hơn sau 2 tuần. Sản phẩm được xác thực nguồn gốc minh bạch, rất đáng tin cậy cho một thương hiệu mới."
+                    </p>
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge rounded-pill bg-primary bg-opacity-10 text-primary border border-primary border-opacity-20 px-3 py-2 fs-9 fw-bold d-inline-flex align-items-center gap-1 shadow-sm">
+                            <span class="material-symbols-outlined fs-8" style="font-variation-settings: 'FILL' 1;">verified</span>
+                            XÁC THỰC BLOCKCHAIN
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Review Card 6 -->
+                <div class="card border-0 bg-surface-container-low p-4 p-md-5 rounded-4xl shadow-sm review-card d-none" data-verified="false" data-timestamp="2024-03-23T18:00:00">
+                    <div class="d-flex justify-content-between align-items-start mb-4">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="d-flex align-items-center justify-content-center bg-primary bg-opacity-10 text-primary fw-bold rounded-circle" style="width: 48px; height: 48px;">AK</div>
+                            <div>
+                                <h3 class="fw-bold fs-5 mb-0">Anh Khoa</h3>
+                                <p class="fs-9 font-monospace text-secondary opacity-50 mb-0">0x55E...E44c • 1 ngày trước</p>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-1 text-warning">
+                            <span class="material-symbols-outlined fs-7" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="material-symbols-outlined fs-7" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="material-symbols-outlined fs-7" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="material-symbols-outlined fs-7" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="material-symbols-outlined fs-7" style="font-variation-settings: 'FILL' 1;">star</span>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-4 mb-4 align-items-center bg-white bg-opacity-50 p-3 rounded-4">
+                        <div class="rounded-3 flex-shrink-0 overflow-hidden" style="width: 64px; height: 64px;">
+                            <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80" class="object-fit-cover w-100 h-100" alt="Laptop Pro 14 M3">
+                        </div>
+                        <div>
+                            <p class="fs-9 fw-bold text-primary mb-1 text-uppercase tracking-widest">Sản phẩm đánh giá</p>
+                            <h4 class="fw-bold text-dark mb-0 fs-6">Laptop Pro 14 M3</h4>
+                        </div>
+                    </div>
+                    <p class="text-secondary fs-5 fst-italic mb-4 lh-base">
+                        "Máy quá mạnh, xử lý video 4K siêu mượt. Pin trâu. Đánh giá này là thật vì mình đã liên kết ví cá nhân để xác nhận chủ sở hữu sản phẩm."
+                    </p>
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge rounded-pill bg-light text-secondary border px-3 py-2 fs-9 fw-bold d-inline-flex align-items-center gap-1 shadow-sm opacity-50">
+                            <span class="material-symbols-outlined fs-8">pending</span>
+                            CHỜ XÁC THỰC
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-5 pt-4 d-flex justify-content-center">
+                <button id="load-more-reviews" class="btn btn-outline-secondary px-5 py-3 fw-bold rounded-pill d-flex align-items-center gap-2 text-secondary transition-all hover-translate-y">
+                    Xem thêm đánh giá
+                    <span class="material-symbols-outlined">expand_more</span>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-light w-100 pt-5 pb-4 border-top mt-5">
+        <div class="container px-4">
+            <div class="row g-4">
+                <div class="col-12 col-md-6">
+                    <div class="vstack gap-4">
+                        <span class="font-headline fw-bold fs-2 text-dark">BlockRate</span>
+                        <p class="fs-7 text-secondary lh-lg mb-0" style="max-width: 400px;">
+                            © 2026 BlockRate. Nền tảng đánh giá Blockchain minh bạch giúp người dùng đưa ra quyết định mua sắm thông minh dựa trên dữ liệu thật.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 text-md-end">
+                    <div class="d-inline-flex gap-4 text-start">
+                        <div class="vstack gap-3">
+                            <span class="fw-bold text-dark fs-8 text-uppercase tracking-widest">Nền tảng</span>
+                            <a class="text-secondary hover-text-primary fs-7 text-decoration-none transition-all" href="about.html">Về chúng tôi</a>
+                            <a class="text-secondary hover-text-primary fs-7 text-decoration-none transition-all" href="contact.html">Liên hệ</a>
+                        </div>
+                        <div class="vstack gap-3">
+                            <span class="fw-bold text-dark fs-8 text-uppercase tracking-widest">Pháp lý</span>
+                            <a class="text-secondary hover-text-primary fs-7 text-decoration-none transition-all" href="terms.html">Điều khoản</a>
+                            <a class="text-secondary hover-text-primary fs-7 text-decoration-none transition-all" href="privacy.html">Bảo mật</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-5 pt-4 border-top text-center">
+                <p class="fs-8 text-secondary opacity-50 mb-0">Thiết kế bởi BlockRate Team • 2026</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

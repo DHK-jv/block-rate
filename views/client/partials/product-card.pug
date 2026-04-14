@@ -1,0 +1,37 @@
+.col.product-card(data-category=product.category)
+  .product-card-inner
+    //- Image Section
+    .product-card__img-container
+      .ratio.ratio-1x1
+        img.w-100.h-100.object-fit-cover(src=product.image, alt=product.name, loading="lazy", onerror="this.src='https://placehold.co/400x400/f1f5f9/94a3b8?text=No+Image'")
+      if product.badge
+        span.product-badge(class=`badge-${product.badge}`)= product.badge.toUpperCase()
+
+    //- Content Section
+    .card-body
+      .d-flex.align-items-center.gap-1.mb-2
+        span.badge.bg-light.text-muted.fw-bold.fs-9.text-uppercase.px-2= product.category
+        if product.brand
+          span.badge.bg-light.text-muted.fw-bold.fs-9.px-2= product.brand
+
+      h3.product-card-title= product.name
+
+      .product-card-meta
+        .d-flex.align-items-center.gap-1
+          - for (let i = 1; i <= 5; i++)
+            if i <= Math.round(product.rating || 0)
+              span.star-filled ★
+            else
+              span.star-empty ★
+          span.text-muted.fs-9.ms-1 (#{product.reviews || 0} Reviews)
+
+      //- Footer Section (Pinned to bottom)
+      .card-footer-custom
+        .d-flex.justify-content-between.align-items-center
+          .price-block
+            .product-price= product.price.toLocaleString('vi-VN') + 'đ'
+            if product.oldPrice
+              .product-old-price= product.oldPrice.toLocaleString('vi-VN') + 'đ'
+          
+          a.btn-detail(href=`/product/${product._id}` title="Xem chi tiết")
+            span.material-symbols-outlined(style="font-size:20px") chevron_right

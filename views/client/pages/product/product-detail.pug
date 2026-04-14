@@ -1,0 +1,287 @@
+extends ../../layouts/default
+
+block content
+  .pd-page
+
+
+    //- ── HERO SECTION ──
+    .pd-hero
+      .pd-hero__img
+        img(src=product.image, alt=product.name, onerror="this.src='https://placehold.co/800x600/0a0e1a/94a3b8?text=No+Image'")
+      
+      .pd-hero__info
+        .pd-id ID: #{product._id}
+        h1.pd-title= product.name
+        
+        .pd-badge-group.d-flex.gap-2.mb-2
+          span.badge.bg-primary.bg-opacity-10.text-primary.rounded-pill.px-3= product.category.toUpperCase()
+          if product.brand
+            span.badge.bg-white.bg-opacity-10.text-white.text-opacity-75.rounded-pill.px-3= product.brand
+
+        .pd-price
+          span.pd-price__current= product.price.toLocaleString('vi-VN') + 'đ'
+          if product.oldPrice
+            span.pd-price__original= product.oldPrice.toLocaleString('vi-VN') + 'đ'
+          else
+            span.pd-price__original (Giá niêm yết)
+
+        blockquote.pd-desc= product.description
+
+        //- Buy Section
+        #buySection.mt-3
+          button.pd-cta#btnMuaHang(data-id=product._id.toString())
+            span.material-symbols-outlined shopping_cart
+            | Mua hàng ngay
+        
+        p.pd-cta-note.fs-9.mt-2
+          span.material-symbols-outlined.fs-9.me-1 security
+          | Giao dịch được bảo mật và lưu trữ trên Blockchain
+
+    //- ── REVIEWS SECTION ──
+    .pd-reviews
+      //- Review Form Panel
+      .pd-reviews__form
+        h3.mb-4 Gửi đánh giá
+        
+        //- Review Gate (locked state)
+        #reviewGate.pd-review-gate
+          span.material-symbols-outlined.mb-3(style="font-size:48px; opacity:0.2") lock
+          p.pd-review-gate__title Quyền đánh giá bị khóa
+          p#reviewGateMsg.pd-review-gate__msg Đang xác thực quyền truy cập...
+
+        //- Review Form (hidden until unlocked)
+        #reviewFormWrapper.d-none
+          p.pd-form-label.mb-2 Xếp hạng sản phẩm
+          .pd-stars.mb-3#starRating
+            - for (let i = 1; i <= 5; i++)
+              span.material-symbols-outlined.star-btn(data-value=i style="cursor:pointer; color:#94a3b8") star
+          input#ratingValue(type="hidden" value="4")
+          
+          p.pd-form-label.mb-2 Nhận xét của bạn
+          textarea#reviewContent(rows="4" placeholder="Sản phẩm dùng rất tốt, giao hàng nhanh...")
+          
+          #reviewAlert.alert.alert-danger.rounded-3.py-2.px-3.fs-7.mt-3.d-none(role="alert")
+          
+          button#btnGuiDanhGia.pd-form-btn.mt-3
+            span.material-symbols-outlined.me-2 send
+            | Gửi đánh giá
+
+      //- Reviews List
+      .pd-reviews__list
+        .pd-reviews__header
+          h2.d-flex.align-items-center.gap-2
+            span.material-symbols-outlined.text-primary rate_review
+            | Đánh giá từ cộng đồng
+          .pd-transparent-badge
+             span.material-symbols-outlined.fs-7.text-success verified_user
+             span 100% Minh bạch (On-chain)
+
+        each review in reviews
+          .pd-review-card
+            .pd-review-card__top
+              .pd-reviewer  
+                .pd-reviewer__avatar= review.user && review.user.walletAddress ? review.user.walletAddress.substring(2, 4).toUpperCase() : '??'
+                .pd-reviewer__meta
+                  strong= review.user && review.user.walletAddress ? (review.user.walletAddress.substring(0, 6) + '...' + review.user.walletAddress.substring(review.user.walletAddress.length - 4)) : 'Người dùng ẩn danh'
+              
+              .pd-review-stars
+                - for (let i = 1; i <= 5; i++)
+                  span.material-symbols-outlined(style=`font-size:16px; color: ${i <= review.rating ? '#f59e0b' : '#334155'}`) star
+
+            p.pd-review-card__text= review.content || 'Không có nhận xét nào.'
+            
+            .pd-review-card__footer
+              button.pd-verified.verify-btn(
+                  data-id=review._id
+                  data-tx=review.txHash
+                  type="button"
+                )
+                span.material-symbols-outlined(style="font-size:14px") account_balance_wallet
+                span Blockchain Verify
+              
+              .pd-tx
+                span.material-symbols-outlined.fs-8.me-1 link
+                span Tx: #{review.txHash ? review.txHash.substring(0, 10) + '...' : "N/A"}
+
+        a.pd-load-more(href="#")
+          span.material-symbols-outlined.me-1(style="vertical-align: middle") expand_more
+          | Xem thêm đánh giá
+
+block scripts
+  script.
+    var productId = "#{product._id}"
+    var hasBought = #{hasBought || false}
+    var pendingReviewCount = #{pendingReviewCount || 0}
+
+    //- ── Wallet Sync & UI Update ──
+    function updateDetailUI() {
+      checkReviewAccess();
+    }
+
+    // ── Traditional Buy (Server) ──
+    var btnMua = document.getElementById('btnMuaHang')
+    if (btnMua) {
+      btnMua.addEventListener('click', async function() {
+        var web3 = window.BlockRateWeb3
+        if (!web3 || !web3.isConnected) {
+          return showToast('Vui lòng kết nối ví để lưu lịch sử mua hàng on-chain.', 'warning')
+        }
+
+        btnMua.disabled = true
+        btnMua.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Đang xử lý...'
+        
+        try {
+          var res = await fetch('/product/buy/' + productId, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+          })
+          var data = await res.json()
+          if (data.success) {
+            btnMua.innerHTML = '<span class="material-symbols-outlined">check_circle</span> Đã mua hàng'
+            btnMua.classList.add('opacity-50')
+            hasBought = true
+            pendingReviewCount++
+            showToast('Mua hàng thành công! Bạn có thể đánh giá sản phẩm ngay.', 'success')
+            checkReviewAccess()
+          } else if (res.status === 401) {
+            window.location.href = '/login'
+          } else {
+            showToast(data.message, 'error')
+            btnMua.disabled = false
+            btnMua.innerHTML = '<span class="material-symbols-outlined">shopping_cart</span> Mua hàng ngay'
+          }
+        } catch {
+          showToast('Lỗi kết nối máy chủ', 'error')
+          btnMua.disabled = false
+          btnMua.innerHTML = '<span class="material-symbols-outlined">shopping_cart</span> Mua hàng ngay'
+        }
+      })
+    }
+
+
+
+    // ── Review Access Gate ──
+    async function checkReviewAccess() {
+      var gate = document.getElementById('reviewGate')
+      var form = document.getElementById('reviewFormWrapper')
+      var msg = document.getElementById('reviewGateMsg')
+      if (!gate || !form) return
+
+      var web3 = window.BlockRateWeb3
+      if (!web3 || !web3.isConnected) {
+        gate.classList.remove('d-none')
+        form.classList.add('d-none')
+        msg.textContent = 'Vui lòng kết nối ví để xác thực quyền đánh giá.'
+        return
+      }
+
+      if (pendingReviewCount > 0) {
+        gate.classList.add('d-none')
+        form.classList.remove('d-none')
+      } else {
+        gate.classList.remove('d-none')
+        form.classList.add('d-none')
+        msg.textContent = hasBought 
+          ? 'Cảm ơn! Bạn đã hoàn thành đánh giá cho lượt mua này.' 
+          : 'Bạn chưa mua sản phẩm này. Hãy mua để gửi đánh giá on-chain.'
+      }
+    }
+
+    // ── Star Rating Interaction ──
+    var selectedRating = 4
+    var stars = document.querySelectorAll('.star-btn')
+    var ratingInput = document.getElementById('ratingValue')
+
+    function renderStars(rating) {
+      stars.forEach(function(star) {
+        var val = parseInt(star.dataset.value)
+        star.style.color = val <= rating ? '#f59e0b' : '#94a3b8'
+        star.style.fontVariationSettings = val <= rating ? "'FILL' 1" : "'FILL' 0"
+      })
+    }
+
+    stars.forEach(function(star) {
+      star.addEventListener('mouseover', function() { renderStars(parseInt(star.dataset.value)) })
+      star.addEventListener('mouseleave', function() { renderStars(selectedRating) })
+      star.addEventListener('click', function() {
+        selectedRating = parseInt(star.dataset.value)
+        ratingInput.value = selectedRating
+        renderStars(selectedRating)
+      })
+    })
+
+    // ── Submit Review ──
+    var btnSubmit = document.getElementById('btnGuiDanhGia')
+    if (btnSubmit) {
+      btnSubmit.addEventListener('click', async function() {
+        var content = document.getElementById('reviewContent').value.trim()
+        var rating = parseInt(ratingInput.value)
+        if (!content || content.length < 5) return showToast('Nhận xét quá ngắn!', 'warning')
+
+        btnSubmit.disabled = true
+        btnSubmit.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Đang gửi...'
+        
+        try {
+          var res = await fetch('/product/review/' + productId, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ rating: rating, content: content })
+          })
+          var data = await res.json()
+          if (data.success) {
+            pendingReviewCount--
+            appendReviewToDOM(data.review, data.txHash)
+            checkReviewAccess()
+            document.getElementById('reviewContent').value = ''
+            showToast('Đánh giá của bạn đã được lưu on-chain!', 'success')
+          } else {
+             showToast(data.message, 'error')
+          }
+        } catch {
+          showToast('Lỗi kết nối', 'error')
+        } finally {
+          btnSubmit.disabled = false
+          btnSubmit.innerHTML = '<span class="material-symbols-outlined me-2">send</span> Gửi đánh giá'
+        }
+      })
+    }
+
+    // ── Blockchain Verify Delegation ──
+    document.querySelector('.pd-reviews__list')?.addEventListener('click', async function(e) {
+      var btn = e.target.closest('.verify-btn')
+      if (!btn) return
+      
+      const label = btn.querySelector('span:not(.material-symbols-outlined)')
+      const icon = btn.querySelector('.material-symbols-outlined')
+      
+      btn.disabled = true
+      label.textContent = 'Checking...'
+      icon.textContent = 'published_with_changes'
+      icon.classList.add('spin-icon')
+
+      try {
+        var res = await fetch('/product/verify-review/' + btn.dataset.id)
+        var data = await res.json()
+        if (data.success) {
+          label.textContent = 'Verified'
+          icon.textContent = 'verified'
+          btn.style.borderColor = '#22c55e'
+          btn.style.color = '#22c55e'
+        } else {
+          label.textContent = 'Tampered'
+          icon.textContent = 'report'
+          btn.style.borderColor = '#ef4444'
+          btn.style.color = '#ef4444'
+        }
+      } catch {
+        label.textContent = 'Error'
+      }
+    })
+
+    function appendReviewToDOM(review, txHash) {
+       location.reload() // Simplify for now to ensure all styles match
+    }
+
+    // ── Init ──
+    window.addEventListener('DOMContentLoaded', updateDetailUI)
+    window.addEventListener('walletUIUpdated', updateDetailUI)

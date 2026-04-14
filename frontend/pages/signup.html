@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Đăng ký | BlockRate</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Manrope:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <link href="../css/style.css" rel="stylesheet"/>
+    <script src="../js/main.js" defer></script>
+    <script src="../js/auth.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+</head>
+<body class="text-on-surface bg-light font-body d-flex flex-column min-vh-100">
+    <!-- TopNavBar -->
+    <nav class="fixed-top w-100 glass-nav shadow-sm">
+        <div class="container d-flex justify-content-between align-items-center px-4 py-3">
+            <div class="d-flex align-items-center gap-2">
+                <a class="text-2xl font-black tracking-tight text-primary font-headline text-decoration-none" href="../home.html">BlockRate</a>
+            </div>
+            <div class="d-flex align-items-center gap-3">
+                <a href="login.html" class="px-4 py-2 bg-primary-container text-white font-headline fs-7 font-bold rounded-pill text-decoration-none shadow-md hover-scale">Đăng nhập</a>
+            </div>
+        </div>
+    </nav>
+    <!-- Main Content: Register Card -->
+    <main class="flex-grow-1 d-flex align-items-center justify-content-center px-4 pt-5 pb-5 position-relative overflow-hidden">
+        <!-- Abstract background elements -->
+        <div class="position-absolute top-0 start-0 w-100 h-100 opacity-25 -z-1" style="background: radial-gradient(circle at 10% 20%, var(--md-sys-color-primary-container) 0%, transparent 40%), radial-gradient(circle at 90% 80%, var(--md-sys-color-secondary-container) 0%, transparent 40%);"></div>
+        
+        <div class="w-100" style="max-width: 550px;">
+            <div class="card border-0 bg-surface-container-low p-1 rounded-4 shadow-sm">
+                <div class="card-body bg-surface-container-lowest p-4 p-md-5 rounded-4 position-relative">
+                    <!-- Close/Back to Home Button -->
+                    <a href="../home.html" class="position-absolute top-0 end-0 m-4 p-2 text-secondary opacity-50 hover-opacity-100 transition-all rounded-circle bg-hover-light d-flex align-items-center justify-content-center text-decoration-none" title="Quay lại trang chủ">
+                        <span class="material-symbols-outlined fs-5">close</span>
+                    </a>
+                    <header class="mb-5 text-center">
+                        <h1 class="font-headline h2 fw-black text-dark mb-2 tracking-tight">Tạo tài khoản mới</h1>
+                        <p class="text-secondary opacity-75 fs-7 mb-0">Tham gia cộng đồng đánh giá Blockchain minh bạch nhất.</p>
+                    </header>
+                    <form action="#" class="vstack gap-4">
+                        <div>
+                            <label class="form-label fw-bold text-secondary opacity-75 fs-8 mb-2 px-1" for="full-name">Họ tên</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-surface-container-high border-0 rounded-start-3 px-3">
+                                    <span class="material-symbols-outlined fs-5 text-secondary opacity-50">person</span>
+                                </span>
+                                <input class="form-control border-0 bg-surface-container-high rounded-end-3 py-3 px-3 text-dark focus-ring-primary shadow-none" id="full-name" name="full-name" placeholder="Nhập họ tên của bạn" type="text"/>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="form-label fw-bold text-secondary opacity-75 fs-8 mb-2 px-1" for="email">Email</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-surface-container-high border-0 rounded-start-3 px-3">
+                                    <span class="material-symbols-outlined fs-5 text-secondary opacity-50">mail</span>
+                                </span>
+                                <input class="form-control border-0 bg-surface-container-high rounded-end-3 py-3 px-3 text-dark focus-ring-primary shadow-none" id="email" name="email" placeholder="Nhập email của bạn" type="email"/>
+                            </div>
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold text-secondary opacity-75 fs-8 mb-2 px-1" for="password">Mật khẩu</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-surface-container-high border-0 rounded-start-3 px-3">
+                                        <span class="material-symbols-outlined fs-5 text-secondary opacity-50">lock</span>
+                                    </span>
+                                    <input class="form-control border-0 bg-surface-container-high rounded-end-3 py-3 px-3 text-dark focus-ring-primary shadow-none" id="password" name="password" placeholder="••••••••" type="password"/>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold text-secondary opacity-75 fs-8 mb-2 px-1" for="confirm-password">Xác nhận</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-surface-container-high border-0 rounded-start-3 px-3">
+                                        <span class="material-symbols-outlined fs-5 text-secondary opacity-50">verified_user</span>
+                                    </span>
+                                    <input class="form-control border-0 bg-surface-container-high rounded-end-3 py-3 px-3 text-dark focus-ring-primary shadow-none" id="confirm-password" name="confirm-password" placeholder="••••••••" type="password"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pt-2">
+                            <button class="btn btn-primary btn-lg w-100 py-3 rounded-pill fw-bold shadow-md hover-scale" type="submit">
+                                Đăng ký ngay
+                            </button>
+                        </div>
+                    </form>
+                    <div class="mt-4 pt-4 border-top border-light text-center">
+                        <p class="text-secondary opacity-75 fs-7 mb-0">
+                            Đã có tài khoản? 
+                            <a class="text-primary fw-bold text-decoration-none hover-underline" href="login.html">Đăng nhập</a>
+                        </p>
+                    </div>
+                    <div class="mt-4 d-flex justify-content-center align-items-center gap-2 text-secondary opacity-50">
+                        <span class="material-symbols-outlined fs-6" style="font-variation-settings: 'FILL' 1;">verified</span>
+                        <span class="fs-9 fw-bold text-uppercase tracking-widest">Dữ liệu được bảo mật trên Blockchain</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Footer -->
+    <footer class="bg-light w-100 pt-5 pb-4 border-top mt-auto">
+        <div class="container px-4">
+            <div class="row g-4">
+                <div class="col-12 col-md-6">
+                    <div class="vstack gap-4">
+                        <span class="font-headline fw-bold fs-2 text-dark">BlockRate</span>
+                        <p class="fs-7 text-secondary lh-lg mb-0" style="max-width: 400px;">
+                            © 2026 BlockRate. Nền tảng đánh giá Blockchain minh bạch giúp người dùng đưa ra quyết định mua sắm thông minh dựa trên dữ liệu thật.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 text-md-end">
+                    <div class="d-inline-flex gap-4 text-start flex-wrap">
+                        <div class="vstack gap-2">
+                            <span class="fw-bold text-dark fs-8 text-uppercase tracking-widest mb-2">Nền tảng</span>
+                            <a class="text-secondary hover-text-primary fs-7 text-decoration-none transition-all" href="about.html">Về chúng tôi</a>
+                            <a class="text-secondary hover-text-primary fs-7 text-decoration-none transition-all" href="contact.html">Liên hệ</a>
+                            <a class="text-secondary hover-text-primary fs-7 text-decoration-none transition-all" href="guide.html">Hướng dẫn</a>
+                        </div>
+                        <div class="vstack gap-2">
+                            <span class="fw-bold text-dark fs-8 text-uppercase tracking-widest mb-2">Pháp lý</span>
+                            <a class="text-secondary hover-text-primary fs-7 text-decoration-none transition-all" href="terms.html">Điều khoản</a>
+                            <a class="text-secondary hover-text-primary fs-7 text-decoration-none transition-all" href="privacy.html">Bảo mật</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-5 pt-4 border-top text-center text-md-start">
+                <p class="fs-8 text-secondary opacity-50 mb-0">Thiết kế bởi BlockRate Team • 2026</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

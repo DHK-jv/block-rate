@@ -1,0 +1,103 @@
+nav.fixed-top.w-100.glass-nav.shadow-sm
+  .container.d-flex.justify-content-between.align-items-center.px-4.py-3
+    //- Left
+    .d-flex.align-items-center.gap-4
+      a.fs-3.fw-black.tracking-tight.text-primary.font-headline.text-decoration-none(href="/") BlockRate
+      .d-none.d-md-flex.align-items-center.gap-4
+        a.text-dark.text-opacity-75.fw-bold.font-headline.fs-7.text-decoration-none.hover-primary(href="/") Trang chủ
+
+    //- Right
+    .d-flex.align-items-center.gap-3
+      //- Wallet Connect Button
+      button#walletBtn.btn-wallet-nav.d-none.d-md-flex.align-items-center.gap-2
+        span.wallet-dot#walletDot
+        span#walletLabel Kết nối ví
+
+      if currentUser
+        a.text-dark.text-opacity-75.fw-bold.font-headline.fs-7.text-decoration-none.hover-primary.me-2(href="/profile/purchased-list")
+          span.material-symbols-outlined.fs-6 history
+          |  Đã mua
+
+      button#mobile-menu-btn.d-md-none.p-2.text-secondary.border-0.bg-transparent.rounded-circle
+        span.material-symbols-outlined menu
+
+  //- Mobile Menu
+  #mobile-menu.d-none.d-md-none.position-absolute.top-100.start-0.w-100.glass-nav.shadow-lg.p-4
+    a.d-block.text-dark.text-opacity-75.fw-bold.text-decoration-none.mb-3(href="/") Trang chủ
+    //- Mobile Wallet Button
+    button#walletBtnMobile.btn-wallet-nav.w-100.d-flex.align-items-center.justify-content-center.gap-2.mb-3
+      span.wallet-dot#walletDotMobile
+      span#walletLabelMobile Kết nối ví
+    if currentUser
+      hr.border-dark.opacity-10.my-3
+      a.d-block.text-dark.text-opacity-75.fw-bold.text-decoration-none(href="/profile/purchased-list") Lịch sử mua
+
+//- Styles moved to style.css or consolidated below (only interactive logic kept here if any)
+
+script.
+
+
+  // Mobile menu toggle
+  const mobileMenuBtn = document.getElementById('mobile-menu-btn')
+  const mobileMenu = document.getElementById('mobile-menu')
+  if (mobileMenuBtn) {
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('d-none')
+    })
+  }
+
+  // ── Wallet Connect ──
+  function updateWalletUI(info) {
+    const elements = [
+      { btn: 'walletBtn', dot: 'walletDot', label: 'walletLabel' },
+      { btn: 'walletBtnMobile', dot: 'walletDotMobile', label: 'walletLabelMobile' },
+    ]
+    elements.forEach(({ btn, label }) => {
+      const btnEl = document.getElementById(btn)
+      const labelEl = document.getElementById(label)
+      if (!btnEl || !labelEl) return
+      if (info && info.address) {
+        btnEl.classList.add('connected')
+        labelEl.textContent = info.shortAddress || BlockRateWeb3.formatAddress(info.address)
+        btnEl.title = info.address
+      } else {
+        btnEl.classList.remove('connected')
+        labelEl.textContent = 'Kết nối ví'
+        btnEl.title = ''
+      }
+    })
+    window.dispatchEvent(new CustomEvent('walletUIUpdated', { detail: info }))
+  }
+
+  async function handleWalletClick() {
+    if (!window.BlockRateWeb3) return alert('Module web3 chưa sẵn sàng.')
+    if (!window.ethereum) return alert('Vui lòng cài MetaMask tại metamask.io')
+    if (BlockRateWeb3.isConnected) {
+      BlockRateWeb3.disconnectWallet()
+      updateWalletUI(null)
+    } else {
+      try {
+        const info = await BlockRateWeb3.connectWallet()
+        updateWalletUI(info)
+      } catch (err) {
+        alert(err.message)
+      }
+    }
+  }
+
+  document.getElementById('walletBtn')?.addEventListener('click', handleWalletClick)
+  document.getElementById('walletBtnMobile')?.addEventListener('click', handleWalletClick)
+
+  // Restore wallet on page load
+  window.addEventListener('DOMContentLoaded', async () => {
+    if (window.BlockRateWeb3 && window.ethereum) {
+      try {
+        const info = await BlockRateWeb3.restoreWallet()
+        if (info) updateWalletUI(info)
+      } catch {}
+    }
+  })
+
+  // Listen for MetaMask events
+  window.addEventListener('walletChanged', (e) => updateWalletUI(e.detail))
+  window.addEventListener('walletDisconnected', () => updateWalletUI(null))

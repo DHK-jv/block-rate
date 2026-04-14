@@ -1,0 +1,54 @@
+{
+  "name": "blockrate",
+  "version": "1.0.0",
+  "description": "Tài liệu này liệt kê các sản phẩm hiện có trong mockup giao diện (HTML) của dự án BlockRate nhưng chưa có hình ảnh thực tế. Các hình ảnh này hiện đang được thay thế bằng các Placeholder (biểu tượng Material Icons).",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "sync-products": "node scripts/sync-products.mjs",
+    "test": "hardhat test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DHK-jv/BlockRate.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DHK-jv/BlockRate/issues"
+  },
+  "homepage": "https://github.com/DHK-jv/BlockRate#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "groq-sdk": "^1.1.2",
+    "jsonwebtoken": "^9.0.3",
+    "mongodb": "^7.1.0",
+    "mongoose": "^9.3.2",
+    "node-fetch": "^3.3.2",
+    "pug": "^3.0.4"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ethers": "^4.0.7",
+    "@nomicfoundation/hardhat-ignition": "^3.0.7",
+    "@nomicfoundation/hardhat-toolbox-mocha-ethers": "^3.0.3",
+    "@types/chai": "^5.2.3",
+    "@types/chai-as-promised": "^8.0.2",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^22.19.15",
+    "chai": "^6.2.2",
+    "ethers": "^6.16.0",
+    "forge-std": "github:foundry-rs/forge-std#v1.9.4",
+    "hardhat": "^3.3.0",
+    "mocha": "^11.3.0",
+    "nodemon": "^3.1.14",
+    "typescript": "~5.8.0"
+  },
+  "type": "module"
+}

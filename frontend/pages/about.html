@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Về chúng tôi | BlockRate</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Manrope:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <link href="../css/style.css" rel="stylesheet"/>
+    <script src="../js/main.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+</head>
+<body class="text-on-surface bg-surface d-flex flex-column min-vh-100">
+    <!-- TopNavBar -->
+    <nav class="fixed-top w-100 glass-nav shadow-sm">
+        <div class="container d-flex justify-content-between align-items-center px-4 py-3">
+            <div class="d-flex align-items-center gap-4">
+                <a class="text-2xl font-black tracking-tight text-primary font-headline text-decoration-none" href="../home.html">BlockRate</a>
+                <div class="d-none d-md-flex align-items-center gap-4">
+                    <a class="text-secondary font-headline fs-7 text-decoration-none transition-colors opacity-75 hover-opacity-100" href="../home.html">Trang chủ</a>
+                    <a class="text-secondary font-headline fs-7 text-decoration-none transition-colors opacity-75 hover-opacity-100" href="products.html">Khám phá</a>
+                    <a class="text-secondary font-headline fs-7 text-decoration-none transition-colors opacity-75 hover-opacity-100" href="reviews.html">Đánh giá</a>
+                </div>
+            </div>
+            <div class="d-flex align-items-center gap-3">
+                <a href="login.html" class="px-3 py-2 text-secondary font-headline fs-7 text-decoration-none rounded-pill transition-all bg-hover-light">Đăng nhập</a>
+                <a href="signup.html" class="px-4 py-2 bg-primary-container text-white font-headline fs-7 font-bold rounded-pill text-decoration-none shadow-md hover-scale">Đăng ký</a>
+                <button id="mobile-menu-btn" class="d-md-none p-2 text-secondary border-0 bg-transparent rounded-circle transition-colors bg-hover-light">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="d-none d-md-none position-absolute top-100 start-0 w-100 bg-white shadow-lg border-top p-4 space-y-3">
+            <a class="d-block text-secondary font-medium text-decoration-none" href="../home.html">Trang chủ</a>
+            <a class="d-block text-secondary font-medium text-decoration-none" href="products.html">Khám phá</a>
+            <a class="d-block text-secondary font-medium text-decoration-none" href="reviews.html">Đánh giá</a>
+        </div>
+    </nav>
+
+    <main class="pt-5 mt-5 pb-5">
+        <div class="container py-5 px-4" style="max-width: 900px;">
+            <h1 class="display-4 fw-black font-headline mb-4">Về BlockRate</h1>
+            <div class="vstack gap-4">
+                <p class="fs-4 text-secondary opacity-75 lh-base">
+                    BlockRate là nền tảng đánh giá sản phẩm phi tập trung đầu tiên tại Việt Nam, tận dụng công nghệ Blockchain để đảm bảo tính minh bạch và bất biến của dữ liệu.
+                </p>
+                <h2 class="h2 fw-bold font-headline mt-4">Sứ mệnh của chúng tôi</h2>
+                <p class="text-secondary lh-lg mb-0">
+                    Chúng tôi tin rằng mọi người tiêu dùng đều xứng đáng được tiếp cận với những đánh giá trung thực, không bị thao túng bởi người bán hoặc các nền tảng tập trung. Bằng cách ghi lại mọi đánh giá lên Blockchain, chúng tôi tạo ra một "nguồn sự thật duy nhất" mà không ai có thể sửa đổi hay xóa bỏ.
+                </p>
+                <h2 class="h2 fw-bold font-headline mt-4">Tại sao dùng Blockchain?</h2>
+                <ul class="list-unstyled vstack gap-3">
+                    <li class="d-flex gap-3 align-items-start">
+                        <span class="material-symbols-outlined text-primary mt-1">check_circle</span>
+                        <div>
+                            <strong class="text-dark">Tính minh bạch:</strong>
+                            <p class="text-secondary mb-0">Bất kỳ ai cũng có thể kiểm tra nguồn gốc của đánh giá.</p>
+                        </div>
+                    </li>
+                    <li class="d-flex gap-3 align-items-start">
+                        <span class="material-symbols-outlined text-primary mt-1">check_circle</span>
+                        <div>
+                            <strong class="text-dark">Không thể giả mạo:</strong>
+                            <p class="text-secondary mb-0">Dữ liệu đã ghi lên chain là vĩnh viễn và không thể chỉnh sửa.</p>
+                        </div>
+                    </li>
+                    <li class="d-flex gap-3 align-items-start">
+                        <span class="material-symbols-outlined text-primary mt-1">check_circle</span>
+                        <div>
+                            <strong class="text-dark">Xác thực người mua:</strong>
+                            <p class="text-secondary mb-0">Chỉ những người thực sự sở hữu sản phẩm (thông qua giao dịch trên chain) mới có thể để lại đánh giá xác thực.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-light w-100 pt-5 pb-4 border-top mt-auto">
+        <div class="container px-4">
+            <div class="row g-4">
+                <div class="col-12 col-md-6">
+                    <div class="vstack gap-4">
+                        <span class="font-headline fw-bold fs-2 text-dark">BlockRate</span>
+                        <p class="fs-7 text-secondary lh-lg mb-0" style="max-width: 400px;">
+                            © 2026 BlockRate. Nền tảng đánh giá Blockchain minh bạch giúp người dùng đưa ra quyết định mua sắm thông minh dựa trên dữ liệu thật.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 text-md-end">
+                    <div class="d-inline-flex gap-4 text-start flex-wrap">
+                        <div class="vstack gap-2">
+                            <span class="fw-bold text-dark fs-8 text-uppercase tracking-widest mb-2">Nền tảng</span>
+                            <a class="text-secondary hover-text-primary fs-7 text-decoration-none transition-all" href="about.html">Về chúng tôi</a>
+                            <a class="text-secondary hover-text-primary fs-7 text-decoration-none transition-all" href="contact.html">Liên hệ</a>
+                            <a class="text-secondary hover-text-primary fs-7 text-decoration-none transition-all" href="guide.html">Hướng dẫn</a>
+                        </div>
+                        <div class="vstack gap-2">
+                            <span class="fw-bold text-dark fs-8 text-uppercase tracking-widest mb-2">Pháp lý</span>
+                            <a class="text-secondary hover-text-primary fs-7 text-decoration-none transition-all" href="terms.html">Điều khoản</a>
+                            <a class="text-secondary hover-text-primary fs-7 text-decoration-none transition-all" href="privacy.html">Bảo mật</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-5 pt-4 border-top text-center text-md-start">
+                <p class="fs-8 text-secondary opacity-50 mb-0">Thiết kế bởi BlockRate Team • 2026</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

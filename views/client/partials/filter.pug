@@ -1,0 +1,20 @@
+section.container.px-4.mb-12
+  //- Header
+  .d-flex.align-items-center.justify-content-between
+    h2.h3.fw-black.font-headline.text-dark Sản phẩm nổi bật
+    .d-flex.gap-2
+      button.p-2.bg-surface-container-low.border-0.rounded-circle
+        span.material-symbols-outlined filter_list
+
+  //- Filter buttons
+  .d-flex.flex-wrap.gap-2.mt-3
+    button.px-4.py-2.bg-primary.text-white.rounded-pill.fs-7.fw-semibold.border-0.filter-btn(data-category='all') Tất cả
+    button.px-4.py-2.bg-surface-container-low.text-secondary.rounded-pill.fs-7.fw-medium.border-0.filter-btn(data-category='electronics') Thiết bị số
+    button.px-4.py-2.bg-surface-container-low.text-secondary.rounded-pill.fs-7.fw-medium.border-0.filter-btn(data-category='fashion') Thời trang
+    button.px-4.py-2.bg-surface-container-low.text-secondary.rounded-pill.fs-7.fw-medium.border-0.filter-btn(data-category='houseware') Gia dụng
+    button.px-4.py-2.bg-surface-container-low.text-secondary.rounded-pill.fs-7.fw-medium.border-0.filter-btn(data-category='beauty') Làm đẹp
+    button.px-4.py-2.bg-surface-container-low.text-secondary.rounded-pill.fs-7.fw-medium.border-0.filter-btn(data-category='accessories') Phụ kiện
+
+  //- Product grid
+  #productGrid.row.row-cols-1.row-cols-sm-2.row-cols-lg-4.g-4.mt-2
+    include ./grid-product

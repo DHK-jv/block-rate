@@ -1,0 +1,48 @@
+extends ../../layouts/default
+
+block content
+  .container.py-5
+    .d-flex.align-items-center.gap-3.mb-5
+      .p-3.bg-primary.bg-opacity-10.rounded-4.text-primary
+        span.material-symbols-outlined(style="font-size: 32px") history
+      div
+        h2.font-headline.fw-black.mb-1 Lịch sử mua hàng
+        p.text-secondary.fs-7.mb-0 Quản lý các sản phẩm bạn đã sở hữu on-chain
+
+    if products.length === 0
+      .glass-card.p-5.text-center.my-5.bg-white
+        span.material-symbols-outlined.text-muted.mb-3(style="font-size: 64px; opacity: 0.3") inventory_2
+        h4.text-dark Bạn chưa có sản phẩm nào
+        p.text-secondary.mb-4 Khám phá các ưu đãi mới nhất tại cửa hàng của chúng tôi.
+        a.btn.btn-primary-gradient.rounded-pill.px-5(href="/home") Mua sắm ngay
+
+    else
+      .row.g-4
+        each product in products
+          .col-12.col-md-6.col-lg-4
+            .glass-card.h-100.overflow-hidden.hover-scale.bg-white
+              .position-relative
+                .ratio.ratio-16x9
+                  img.w-100.h-100.object-fit-cover(src=product.image alt=product.name onerror="this.src='https://placehold.co/400x300/f8fafc/94a3b8?text=No+Image'")
+                span.badge.bg-success.rounded-pill.position-absolute.top-0.end-0.m-3.px-3.py-2.fs-9
+                  span.material-symbols-outlined.fs-9.me-1 verified
+                  | ĐÃ SỞ HỮU
+
+              .card-body.p-4.d-flex.flex-column
+                .d-flex.align-items-center.gap-2.mb-2
+                   span.badge.bg-light.text-secondary.fw-medium.fs-9.text-uppercase= product.category
+                
+                h5.card-title.font-headline.fw-bold.mb-3.text-dark= product.name
+                
+                .mt-auto
+                  .d-flex.justify-content-between.align-items-center.mb-3
+                    span.text-primary.fw-black.fs-5= product.price.toLocaleString('vi-VN') + 'đ'
+
+                  .row.g-2
+                    .col-8
+                      a.btn.btn-outline-secondary.btn-sm.rounded-pill.w-100.fw-bold.opacity-75(href=`/product/${product._id}`)
+                        span.material-symbols-outlined.fs-7.me-1 visibility
+                        | Xem lại
+                    .col-4
+                      a.btn.btn-primary-gradient.btn-sm.rounded-pill.w-100(href=`/product/${product._id}#reviewGate` title="Để lại đánh giá")
+                        span.material-symbols-outlined.fs-7 rate_review

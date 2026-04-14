@@ -1,0 +1,52 @@
+extends ../../layouts/default
+
+block content
+  .container.d-flex.align-items-center.justify-content-center(style="min-height: 80vh;")
+    .glass-card.p-5.text-center.shadow-lg(style="max-width: 500px; width: 100%; background: #fff")
+      .mb-4
+        span.material-symbols-outlined(style="font-size: 80px; color: var(--bs-primary);") account_balance_wallet
+      
+      h1.font-headline.fw-black.text-dark.mb-3 Chào mừng đến với BlockRate
+      p.text-secondary.mb-5 
+        | Vui lòng kết nối ví MetaMask để bắt đầu mua sắm, quản lý sản phẩm và viết đánh giá on-chain minh bạch.
+
+      //- Wallet Connect
+      button#loginWalletBtn.btn.btn-primary-gradient.rounded-pill.w-100.py-3.fs-6.fw-bold
+        span.material-symbols-outlined.me-2 login
+        | Bắt đầu với MetaMask
+      
+      .mt-4.d-flex.align-items-center.justify-content-center.gap-2.text-muted.fs-8
+        span.material-symbols-outlined.fs-8 security
+        | Bảo mật bằng Blockchain (EVM)
+
+block scripts
+  script.
+    document.getElementById('loginWalletBtn').addEventListener('click', async () => {
+      const web3 = window.BlockRateWeb3;
+      if (web3) {
+        try {
+          const btn = document.getElementById('loginWalletBtn');
+          btn.disabled = true;
+          btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Đang kết nối...';
+          
+          await web3.connect();
+          showToast('Kết nối ví thành công!', 'success');
+          
+          setTimeout(() => {
+             window.location.href = '/home';
+          }, 1500);
+
+        } catch (err) {
+          showToast(err.message || 'Lỗi kết nối ví', 'error');
+          document.getElementById('loginWalletBtn').disabled = false;
+          document.getElementById('loginWalletBtn').innerHTML = '<span class="material-symbols-outlined me-2">login</span> Bắt đầu với MetaMask';
+        }
+      }
+    });
+
+    window.addEventListener('walletUIUpdated', () => {
+       const web3 = window.BlockRateWeb3;
+       if (web3 && web3.isConnected) {
+          window.location.href = '/home';
+       }
+    });
