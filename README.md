@@ -1,52 +1,73 @@
-# BlockRate
+# BlockRate — Decentralized Transparent Review Marketplace
 
-Dự án Đánh giá Sản phẩm trên nền tảng Blockchain. Dưới đây là hướng dẫn cài đặt để chạy dự án.
-
-## Hướng dẫn Cài đặt & Chạy dự án (Dành cho người mới clone)
-
-1. **Cài đặt thư viện:**
-   Sau khi clone code về, bạn cần cài đặt các gói thư viện Node.js bằng lệnh:
-   ```bash
-   npm install
-   ```
-
-2. **Cấu hình môi trường (.env):**
-   Dự án yêu cầu các biến môi trường để chạy (kết nối MongoDB, config bảo mật,...). Bạn hãy copy file `.env.example` thành file `.env` và điền các thông tin thực tế của bạn vào file `.env` đó:
-   ```bash
-   cp .env.example .env
-   ```
-   *(Sửa file `.env` theo thông số database và port của bạn)*
-
-3. **Chạy Server:**
-   Chạy lệnh sau để khởi động server (có tích hợp nodemon tự động reload):
-   ```bash
-   npm run dev
-   ```
+**BlockRate** là một nền tảng thương mại điện tử hiện đại, nơi sự minh bạch được đặt lên hàng đầu. Mọi đánh giá sản phẩm đều được bảo chứng bởi công nghệ Blockchain và kiểm duyệt thông minh bằng AI, giúp loại bỏ hoàn toàn các nhận xét giả mạo hoặc thiếu khách quan.
 
 ---
 
-## Danh sách ảnh và chú thích
+## 🚀 Tính Năng Cốt Lõi
 
-Tài liệu này liệt kê các sản phẩm hiện có trong mockup giao diện (HTML) của dự án BlockRate nhưng chưa có hình ảnh thực tế. Các hình ảnh này hiện đang được thay thế bằng các Placeholder (biểu tượng Material Icons).
+- **Web3 Wallet Login**: Đăng nhập nhanh chóng, bảo mật thông qua ví **MetaMask**. Không cần mật khẩu, không cần đăng ký rườm rà.
+- **On-Chain Verification**: Mỗi đánh giá được mã hóa (hashing) và lưu trữ trên Blockchain. Người dùng có thể kiểm chứng tính toàn vẹn của dữ liệu bất cứ lúc nào.
+- **AI Moderation**: Tích hợp **Llama 3.1 (Groq API)** để tự động nhận diện và chặn các nội dung spam, xúc phạm hoặc đánh giá rác.
+- **Local Spam Guard**: Hệ thống lọc rác cục bộ giúp tối ưu hiệu năng và bảo vệ tài nguyên API.
+- **Premium UI/UX**: Giao diện được thiết kế theo phong cách tối giản, sang trọng với các hiệu ứng chuyển động mượt mà và Layout lưới sản phẩm đồng nhất.
 
-Dưới đây là danh sách các sản phẩm cần bổ sung ảnh và gợi ý chú thích (caption) cho từng ảnh.
+---
 
+## 🛠 Tech Stack
 
-| Sản phẩm | Phân loại (Gợi ý) | Chú thích ảnh (Caption) ghi chú |
-| :--- | :--- | :--- |
-| **Tai nghe Studio Pro X** | Điện tử | Tai nghe Studio Pro X với công nghệ chống ồn chủ động và âm thanh Hi-Res. |
-| **Đồng hồ Chrono Elite** | Phụ kiện | Đồng hồ Chrono Elite thiết kế sang trọng, tích hợp tính năng theo dõi sức khỏe. |
-| **Máy pha Cà phê AutoBrew** | Gia dụng | Máy pha cà phê AutoBrew mini cho văn phòng và gia đình, pha Espresso trong 30 giây. |
-| **Giày Sneaker Velocity** | Thời trang | Giày Sneaker Velocity thiết kế năng động, đế giảm chấn êm ái cho mọi hoạt động. |
-| **Bàn phím cơ Aurora RGB** | Điện tử | Bàn phím cơ Aurora RGB với Switch tùy chỉnh và đèn nền 16.8 triệu màu. |
-| **Smartphone Galaxy S23** | Điện thoại | Smartphone Galaxy S23 với hệ thống camera đột phá và hiệu năng mạnh mẽ. |
-| **Giày Air Cloud Walk** | Thời trang | Giày Air Cloud Walk siêu nhẹ, mang lại cảm giác "đi trên mây" suốt cả ngày. |
-| **Laptop Pro 14 M3** | Điện tử | Laptop Pro 14 chip M3 hiệu năng vượt trội cho đồ họa và lập trình chuyên nghiệp. |
-| **Ethereum Hardware Wallet X-200** | Công nghệ | Ví lạnh Ethereum Hardware Wallet X-200 bảo mật đa tầng, quản lý tài sản số an toàn. |
+- **Backend**: Node.js (ES Modules), Express.js
+- **Database**: MongoDB (Mongoose)
+- **Web3**: Ethers.js, Hardhat (Smart Contracts)
+- **AI**: Groq SDK (Llama 3.1 8B Instant)
+- **Frontend**: Pug Template Engine, Vanilla CSS, Bootstrap 5
 
-## Ghi chú chung
+---
 
-1. **Vị trí lưu trữ**: Ảnh sản phẩm nên được lưu vào thư mục `frontend/images/products/`.
-2. **Định dạng**: Khuyến khích sử dụng định dạng `.webp` hoặc `.png` (nền trong suốt) để tối ưu hóa hiệu năng và thẩm mỹ.
-3. **Kích thước**: Nên sử dụng ảnh có tỉ lệ 1:1 (Aspect Ratio square) để phù hợp với bố cục lưới (Grid) hiện tại của sản phẩm.
-4. **Trạng thái phân loại**: Các sản phẩm trên hiện đang được phân loại sơ bộ dựa trên nội dung trong mã nguồn. Có thể điều chỉnh lại khi có danh mục chính thức.
+## 📦 Hướng Dẫn Cài Đặt
+
+### 1. Clone & Install
+```bash
+git clone https://github.com/DHK-jv/block-rate.git
+cd block-rate
+npm install
+```
+
+### 2. Cấu Hình Biến Môi Trường
+Copy file mẫu và điền các thông số cần thiết:
+```bash
+cp .env.example .env
+```
+Các thông số quan trọng cần điền:
+- `MONGO_URI`: Địa chỉ kết nối MongoDB Atlas hoặc Local.
+- `GROQ_API_KEY`: API Key từ Groq Cloud để chạy kiểm duyệt AI.
+- `RPC_URL`: Endpoint của mạng Blockchain (ví dụ: Sepolia, BSC Testnet).
+- `CONTRACT_ADDRESS`: Địa chỉ Smart Contract đã deploy.
+- `PRIVATE_KEY`: Khóa bí mật của ví dùng để ký các giao dịch lưu trữ trên chuỗi.
+
+### 3. Khởi Chạy
+```bash
+# Chế độ phát triển (Auto-reload)
+npm run dev
+```
+
+---
+
+## 🏗 Kiến Trúc Hệ Thống
+
+1. **Mua Hàng**: Khi người dùng mua hàng, một `Order` sẽ được tạo trong MongoDB với trạng thái `pending` đánh giá.
+2. **Đánh Giá**: Người dùng gửi nhận xét kèm số sao.
+3. **Kiểm Duyệt**: 
+   - Bước 1: `quickSpamCheck` (RegEx/Local) lọc các nội dung rác rõ ràng.
+   - Bước 2: `moderateReview` (AI) phân tích ngữ cảnh và cảm xúc của nhận xét.
+4. **Lưu Trữ Chuỗi**: Nếu hợp lệ, hệ thống sẽ tính toán `reviewHash` và gửi giao dịch `submitReview` lên Smart Contract.
+5. **Đồng Bộ Hoá**: Trạng thái `Order` được cập nhật sang `reviewed`, đảm bảo mỗi giao dịch chỉ được đánh giá một lần duy nhất.
+
+---
+
+## 🤝 Liên Hệ
+
+Nếu bạn có bất kỳ câu hỏi hoặc đóng góp nào, vui lòng liên hệ thông qua GitHub Issues.
+
+---
+*© 2026 BlockRate — Minh bạch trong từng đánh giá.*
