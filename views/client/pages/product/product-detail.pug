@@ -94,7 +94,7 @@ block content
               span Phát hiện dữ liệu Ảo / Chưa đồng bộ (Hiển thị: #{reviews.length} - Thực tế Blockchain: #{onchainReviewCount})
 
         each review in reviews
-          .pd-review-card
+          .pd-review-card.mb-2
             .pd-review-card__top
               .pd-reviewer  
                 .pd-reviewer__avatar= review.user && review.user.walletAddress ? review.user.walletAddress.substring(2, 4).toUpperCase() : '??'

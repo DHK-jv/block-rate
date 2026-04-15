@@ -7,7 +7,7 @@ const reviewSchema = new mongoose.Schema(
     rating:  { type: Number, required: true, min: 1, max: 5 },
     content: { type: String, required: true, trim: true, minlength: 10, maxlength: 1000 },
     orderID: { type: mongoose.Schema.Types.ObjectId, ref: "Order",   required: true },
-    txHash:  { type: String, required: true, unique: true },
+    txHash:  { type: String, default: null,sparse: true,  unique: true },
   },
   { timestamps: true }
 );
