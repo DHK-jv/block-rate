@@ -17,28 +17,32 @@ document.addEventListener('DOMContentLoaded', function () {
             btn.classList.remove('text-secondary')
 
             var category = btn.dataset.category
-            console.log('category clicked:', category) // ← kiểm tra
 
             productGrid.innerHTML = '<div class="text-center py-5 w-100">Đang tải...</div>'
 
             var url = '/?category=' + category
-            console.log('fetch url:', url) // ← kiểm tra
 
             fetch(url, {
                 headers: { 'Accept': 'application/json' }
             })
                 .then(function (res) {
-                    console.log('response status:', res.status) // ← kiểm tra
+                    if (!res.ok) {
+                        throw new Error('HTTP ' + res.status)
+                    }
                     return res.json()
                 })
                 .then(function (data) {
-                    console.log('data:', data) // ← kiểm tra
-                    if (!data.success || !data.products.length) {
+                    var products = []
+                    if (data && data.data && Array.isArray(data.data.products)) {
+                        products = data.data.products
+                    }
+
+                    if (!data || !data.success || !products.length) {
                         productGrid.innerHTML = '<p class="text-secondary text-center py-5 w-100">Không có sản phẩm nào</p>'
                         return
                     }
                     var html = ''
-                    data.products.forEach(function (p) {
+                    products.forEach(function (p) {
                         var safePrice = p.price.toLocaleString('vi-VN') + 'đ'
                         var safeOldPrice = p.oldPrice ? p.oldPrice.toLocaleString('vi-VN') + 'đ' : ''
                         var badgeHtml = p.badge ? '<span class="product-badge badge-' + p.badge + '">' + p.badge.toUpperCase() + '</span>' : ''
@@ -88,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     productGrid.innerHTML = html
                 })
                 .catch(function (err) {
-                    console.log('fetch error:', err) // ← kiểm tra
+                    console.error('fetch error:', err)
                     productGrid.innerHTML = '<p class="text-danger text-center py-5 w-100">Lỗi tải sản phẩm</p>'
                 })
         })
