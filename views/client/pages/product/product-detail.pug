@@ -95,27 +95,42 @@ block content
 
         each review in reviews
           .pd-review-card.mb-2
-            .pd-review-card__top
-              .pd-reviewer  
+            .pd-review-card__top.d-flex.align-items-start.justify-content-between
+              .pd-reviewer
                 .pd-reviewer__avatar= review.user && review.user.walletAddress ? review.user.walletAddress.substring(2, 4).toUpperCase() : '??'
                 .pd-reviewer__meta
                   strong= review.user && review.user.walletAddress ? review.user.walletAddress : 'Người dùng ẩn danh'
-              
-              .pd-review-stars
-                - for (let i = 1; i <= 5; i++)
-                  span.material-symbols-outlined(style=`font-size:16px; color: ${i <= review.rating ? '#f59e0b' : '#cbd5e1'}`) star
+                  .pd-review-stars.mt-1
+                    - for (let i = 1; i <= 5; i++)
+                      span.material-symbols-outlined(style=`font-size:16px; color: ${i <= review.rating ? '#f59e0b' : '#cbd5e1'}`) star
+
+              //- 🧾 Order ID góc phải, ngang hàng với sao
+              if review.orderID
+                .pd-order-ref.d-flex.align-items-center.gap-1
+                  svg(width="13" height="13" viewBox="0 0 24 24" fill="none")
+                    path(d="M14 3h7v7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round")
+                    path(d="M10 14L21 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round")
+                    path(d="M21 14v7h-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round")
+                    path(d="M3 10L14 21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round")
+                  span.pd-order-ref__text= '#' + String(review.orderID).slice(0, 8) + '...' + String(review.orderID).slice(-6)
+                  button.pd-order-copy-btn(
+                    type="button"
+                    data-orderid=review.orderID
+                    title="Copy mã đơn hàng"
+                  )
+                    span.material-symbols-outlined(style="font-size:15px") content_copy
+              else
+                .pd-order-ref.text-muted(style="font-size:12px") N/A
 
             p.pd-review-card__text= review.content || 'Không có nhận xét nào.'
-            
             .pd-review-card__footer.mt-3.pt-3.border-top.d-flex.align-items-center.justify-content-between
               button.pd-verified.verify-btn(
-                  data-id=review._id
-                  data-tx=review.txHash
-                  type="button"
-                )
-                  span.material-symbols-outlined(style="font-size:16px") account_balance_wallet
-                  span Blockchain Verify
-              
+                data-id=review._id
+                data-tx=review.txHash
+                type="button"
+              )
+                span.material-symbols-outlined(style="font-size:16px") account_balance_wallet
+                span Blockchain Verify
               .pd-tx
                 if review.txHash
                   a.pd-tx-link(
@@ -128,9 +143,7 @@ block content
                       path(d="M10 14L21 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round")
                       path(d="M21 14v7h-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round")
                       path(d="M3 10L14 21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round")
-
                     span.pd-tx-text.ms-1 #{review.txHash.slice(0, 8)}...#{review.txHash.slice(-6)}
-
                   button.copy-btn(type="button" data-tx=review.txHash title="Copy TX") 📋
                 else
                   span.pd-tx-na Tx: N/A
@@ -338,6 +351,24 @@ block scripts
     function appendReviewToDOM(review, txHash) {
        location.reload() // Simplify for now to ensure all styles match
     }
+    document.querySelector('.pd-reviews__list')?.addEventListener('click', function(e) {
+      var btn = e.target.closest('.pd-order-copy-btn')
+      if (!btn) return
+
+      var orderId = btn.dataset.orderid
+      if (!orderId) return
+
+      navigator.clipboard.writeText(orderId).then(() => {
+        var icon = btn.querySelector('.material-symbols-outlined')
+        icon.textContent = 'check'
+        btn.style.color = '#22c55e'
+        setTimeout(() => {
+          icon.textContent = 'content_copy'
+          btn.style.color = ''
+        }, 2000)
+        showToast('Đã copy mã đơn hàng!', 'success')
+      }).catch(() => showToast('Không thể copy tự động', 'error'))
+    })
 
     // ── Init ──
     window.addEventListener('DOMContentLoaded', updateDetailUI)

@@ -96,7 +96,8 @@ export const review = async (req, res) => {
   try {
     if (!rating || !content) return Response.error(res, "Vui lòng nhập đầy đủ thông tin", 400);
     if (!contract) return Response.error(res, "Hệ thống blockchain chưa được cấu hình", 500);
-
+    if (content.trim().length < 10)
+      return Response.error(res, "Nội dung đánh giá phải có ít nhất 10 ký tự", 400);
     // Kiểm tra quyền đánh giá (Đã hoàn thành đơn hàng và chưa đánh giá)
     const order = await Order.findOne({
       userId, productId, status: "completed", reviewStatus: "pending",
